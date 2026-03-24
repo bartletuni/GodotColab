@@ -549,10 +549,14 @@ position = Vector2(196, 37)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
-[node name="Timer" type="Timer" parent="." unique_id=90464612]
-wait_time = 0.001
-
 [node name="MiniShroom" parent="." unique_id=1140586198 instance=ExtResource("4_7w0at")]
 position = Vector2(-368, 29)
 
-[connection signal="timeout" from="Timer" to="Player" method="_on_timer_timeout"]
+[node name="Timers" type="Node" parent="." unique_id=1941046841]
+
+[node name="Timer" type="Timer" parent="Timers" unique_id=90464612]
+wait_time = 0.001
+
+[node name="ReloadTimer" type="Timer" parent="Timers" unique_id=1685861329]
+
+[connection signal="timeout" from="Timers/Timer" to="Player" method="_on_timer_timeout"]

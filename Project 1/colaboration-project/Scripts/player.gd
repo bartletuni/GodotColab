@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hitbox: Area2D = $hitbox
 @onready var timer: Timer = $"../Timer"
+@onready var reload_timer: Timer = $"../Timers/ReloadTimer"
 
 const SPEED = 450.0
 const HEALTH = 5
@@ -35,7 +36,6 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 	if player_health == 0:
 		timer.start()
 		
-	
 	player_health -= 1
 	
 	print(player_health)
@@ -43,3 +43,4 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 
 func _on_timer_timeout() -> void:
 	animated_sprite_2d.play("death")
+	
