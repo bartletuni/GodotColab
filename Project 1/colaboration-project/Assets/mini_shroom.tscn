@@ -1,13 +1,17 @@
-[gd_scene format=3 uid="uid://bfrixjw8p4k4j"]
+[gd_scene format=3 uid="uid://bcsyweygwkgon"]
 
 [ext_resource type="Texture2D" uid="uid://dgetjdhegwgg7" path="res://Sprites/Tiny Swords (Update 010)/Deco/01.png" id="1_7gqmr"]
+[ext_resource type="Script" uid="uid://bri46mjcylpi2" path="res://Scripts/mini_shroom.gd" id="1_x1d5s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x1d5s"]
 
 [node name="MiniShroom" type="Area2D" unique_id=1140586198]
+script = ExtResource("1_x1d5s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1515014735]
 shape = SubResource("RectangleShape2D_x1d5s")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=121216145]
 texture = ExtResource("1_7gqmr")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

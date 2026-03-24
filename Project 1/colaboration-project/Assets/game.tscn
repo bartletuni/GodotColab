@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://b02do8lf3uslg" path="res://Sprites/Tiny Swords (Update 010)/Terrain/Ground/Tilemap_Flat.png" id="1_53jbt"]
 [ext_resource type="PackedScene" uid="uid://be7iyxjfkhmky" path="res://Assets/Player.tscn" id="2_n1j1f"]
 [ext_resource type="PackedScene" uid="uid://b5yifq0uj6oq4" path="res://Assets/collision_test.tscn" id="3_n1j1f"]
+[ext_resource type="PackedScene" uid="uid://bcsyweygwkgon" path="res://Assets/mini_shroom.tscn" id="4_7w0at"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_53jbt"]
 texture = ExtResource("1_53jbt")
@@ -550,5 +551,8 @@ position_smoothing_speed = 10.0
 
 [node name="Timer" type="Timer" parent="." unique_id=90464612]
 wait_time = 0.001
+
+[node name="MiniShroom" parent="." unique_id=1140586198 instance=ExtResource("4_7w0at")]
+position = Vector2(-368, 29)
 
 [connection signal="timeout" from="Timer" to="Player" method="_on_timer_timeout"]

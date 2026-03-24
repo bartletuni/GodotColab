@@ -41,8 +41,5 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 	print(player_health)
 
 
-	
-
-
 func _on_timer_timeout() -> void:
 	animated_sprite_2d.play("death")
