@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bfrixjw8p4k4j"]
+
+[ext_resource type="Texture2D" uid="uid://dgetjdhegwgg7" path="res://Sprites/Tiny Swords (Update 010)/Deco/01.png" id="1_7gqmr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x1d5s"]
+
+[node name="MiniShroom" type="Area2D" unique_id=1140586198]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1515014735]
+shape = SubResource("RectangleShape2D_x1d5s")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=121216145]
+texture = ExtResource("1_7gqmr")
