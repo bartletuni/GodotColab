@@ -543,20 +543,22 @@ tile_set = SubResource("TileSet_n1j1f")
 [node name="CharacterBody2D" parent="." unique_id=1160183672 instance=ExtResource("3_n1j1f")]
 position = Vector2(196, 37)
 
+[node name="MiniShroom" parent="." unique_id=1140586198 instance=ExtResource("4_7w0at")]
+position = Vector2(-368, 29)
+
 [node name="Player" parent="." unique_id=954826217 instance=ExtResource("2_n1j1f")]
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=787990730]
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
-[node name="MiniShroom" parent="." unique_id=1140586198 instance=ExtResource("4_7w0at")]
-position = Vector2(-368, 29)
-
 [node name="Timers" type="Node" parent="." unique_id=1941046841]
 
 [node name="Timer" type="Timer" parent="Timers" unique_id=90464612]
-wait_time = 0.001
+wait_time = 0.009999999999999998
 
 [node name="ReloadTimer" type="Timer" parent="Timers" unique_id=1685861329]
+wait_time = 1.2999999999999998
 
 [connection signal="timeout" from="Timers/Timer" to="Player" method="_on_timer_timeout"]
+[connection signal="timeout" from="Timers/ReloadTimer" to="Player" method="_on_reload_timer_timeout"]
