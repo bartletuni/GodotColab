@@ -66,6 +66,7 @@ func _physics_process(delta: float) -> void:
 	if attack_right == true:
 		animated_sprite_2d.flip_h = false
 		animated_sprite_2d.play("attack_side")
+		await get_tree().create_timer(0.3).timeout
 		right_box.set_deferred("disabled", false)
 		await get_tree().create_timer(1.1).timeout
 		right_box.set_deferred("disabled", true)
@@ -74,6 +75,7 @@ func _physics_process(delta: float) -> void:
 	if attack_left == true:
 		animated_sprite_2d.flip_h = true
 		animated_sprite_2d.play("attack_side")
+		await get_tree().create_timer(0.3).timeout
 		left_box.set_deferred("disabled", false)
 		await get_tree().create_timer(1.1).timeout
 		left_box.set_deferred("disabled", true)
@@ -81,6 +83,7 @@ func _physics_process(delta: float) -> void:
 		
 	if attack_up == true:
 		animated_sprite_2d.play("attack_up")
+		await get_tree().create_timer(0.3).timeout
 		up_box.set_deferred("disabled", false)
 		await get_tree().create_timer(1.1).timeout
 		up_box.set_deferred("disabled", true)
@@ -88,6 +91,7 @@ func _physics_process(delta: float) -> void:
 		
 	if attack_down == true:
 		animated_sprite_2d.play("attack_down")
+		await get_tree().create_timer(0.3).timeout
 		down_box.set_deferred("disabled", false)
 		await get_tree().create_timer(1.1).timeout
 		down_box.set_deferred("disabled", true)
@@ -96,8 +100,6 @@ func _physics_process(delta: float) -> void:
 		attack_timer.start()
 	
 	health_bar.max_value = HEALTH
-	
-	print(left_box.disabled)
 	
 	move_and_slide()
 	

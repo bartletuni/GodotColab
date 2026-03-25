@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var damage_box: Area2D = $damage_box
 
 const GOBLIN_HEALTH = 3
+const GOBLIN_SPEED = 250
 
 var enemy_health = GOBLIN_HEALTH
 
@@ -15,14 +16,14 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_detection_radius_area_entered(area: Area2D) -> void:
-	
-	var direction = global_position.direction_to(player.global_position)
+	var direction = (player.global_position - global_position).normalized()
+	#var direction = global_position.direction_to(player.global_position)
 	var detected_bodies = detection_radius.get_overlapping_bodies()
 	var bodies_number = detected_bodies.size()
 	
-	if bodies_number > 0:
+	if bodies_number >= 0:
 		animated_sprite_2d.play("Walk")
-		velocity = direction * 300
+		velocity = direction * GOBLIN_SPEED
 		move_and_slide()
 	
 func _on_damage_box_area_entered(area: Area2D) -> void:
