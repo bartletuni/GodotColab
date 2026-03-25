@@ -3,17 +3,20 @@
 [ext_resource type="Script" uid="uid://b3ykf10pggqnv" path="res://Scripts/poison_bone.gd" id="1_suetv"]
 [ext_resource type="Texture2D" uid="uid://d0rlrwmd4cqsb" path="res://Sprites/Tiny Swords (Update 010)/Deco/14.png" id="1_yeyxp"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_suetv"]
-size = Vector2(36, 29)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_suetv"]
+radius = 9.0
+height = 41.0
 
 [node name="PoisonBone" type="Area2D" unique_id=157582885 groups=["Hazards"]]
 script = ExtResource("1_suetv")
 
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1345844586]
+scale = Vector2(1.390625, 1.390625)
+texture = ExtResource("1_yeyxp")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=180640263]
 position = Vector2(1, -1.5)
-shape = SubResource("RectangleShape2D_suetv")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1345844586]
-texture = ExtResource("1_yeyxp")
+rotation = 0.97975373
+shape = SubResource("CapsuleShape2D_suetv")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
