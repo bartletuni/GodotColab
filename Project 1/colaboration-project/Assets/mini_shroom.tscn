@@ -3,15 +3,19 @@
 [ext_resource type="Texture2D" uid="uid://dgetjdhegwgg7" path="res://Sprites/Tiny Swords (Update 010)/Deco/01.png" id="1_7gqmr"]
 [ext_resource type="Script" uid="uid://bri46mjcylpi2" path="res://Scripts/mini_shroom.gd" id="1_x1d5s"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_x1d5s"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_x1d5s"]
+radius = 22.0
 
 [node name="MiniShroom" type="Area2D" unique_id=1140586198]
 script = ExtResource("1_x1d5s")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1515014735]
-shape = SubResource("RectangleShape2D_x1d5s")
-
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=121216145]
+position = Vector2(-1.1444092e-05, -0.99998856)
+scale = Vector2(2.765625, 2.765625)
 texture = ExtResource("1_7gqmr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1515014735]
+position = Vector2(5, 0)
+shape = SubResource("CircleShape2D_x1d5s")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

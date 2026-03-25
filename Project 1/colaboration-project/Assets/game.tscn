@@ -534,6 +534,22 @@ texture_region_size = Vector2i(64, 64)
 tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_53jbt")
 
+[sub_resource type="Theme" id="Theme_7w0at"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0hivi"]
+bg_color = Color(0.91344476, 0.18366334, 0.4073131, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ogrtk"]
+bg_color = Color(0.19033411, 0.6537041, 0.28648335, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [node name="Game" type="Node2D" unique_id=298541792]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=781878034]
@@ -551,6 +567,17 @@ position = Vector2(-368, 29)
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=787990730]
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
+
+[node name="HealthBar" type="ProgressBar" parent="Player" unique_id=1802798618]
+offset_left = -36.0
+offset_top = -70.0
+offset_right = 36.0
+offset_bottom = -43.0
+theme = SubResource("Theme_7w0at")
+theme_override_styles/background = SubResource("StyleBoxFlat_0hivi")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ogrtk")
+value = 100.0
+show_percentage = false
 
 [node name="Timers" type="Node" parent="." unique_id=1941046841]
 
