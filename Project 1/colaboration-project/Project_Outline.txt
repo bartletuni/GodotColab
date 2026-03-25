@@ -1,0 +1,8 @@
+Add player attack
+Add enemy functionalty
+Add enemy attack
+Add enemy spawning
+Add pickups
+	types:
+Add curreny
+Create world

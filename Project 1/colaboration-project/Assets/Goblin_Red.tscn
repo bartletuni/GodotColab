@@ -256,6 +256,9 @@ height = 58.0
 radius = 21.0
 height = 64.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_2vk6v"]
+radius = 731.0246
+
 [node name="Goblin_Red" type="CharacterBody2D" unique_id=851927008]
 script = ExtResource("1_2vk6v")
 
@@ -276,3 +279,10 @@ shape = SubResource("CapsuleShape2D_h8gyj")
 position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_u84o0")
 debug_color = Color(0.9142106, 8.625031e-05, 0.71886444, 0.41960785)
+
+[node name="detection_radius" type="Area2D" parent="." unique_id=8818283 groups=["Enemies"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detection_radius" unique_id=424627140]
+shape = SubResource("CircleShape2D_2vk6v")
+
+[connection signal="area_entered" from="detection_radius" to="." method="_on_detection_radius_area_entered"]

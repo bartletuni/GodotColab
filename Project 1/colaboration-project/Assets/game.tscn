@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b5yifq0uj6oq4" path="res://Assets/collision_test.tscn" id="3_n1j1f"]
 [ext_resource type="PackedScene" uid="uid://bcsyweygwkgon" path="res://Assets/mini_shroom.tscn" id="4_7w0at"]
 [ext_resource type="PackedScene" uid="uid://bh356pmgw328u" path="res://Assets/sign.tscn" id="5_0hivi"]
+[ext_resource type="PackedScene" uid="uid://d0wvheaq85c1x" path="res://Assets/Goblin_Red.tscn" id="8_i2y2s"]
 
 [sub_resource type="Theme" id="Theme_7w0at"]
 
@@ -258,6 +259,9 @@ wait_time = 0.00999999999999999
 
 [node name="ReloadTimer" type="Timer" parent="Timers" unique_id=1685861329]
 wait_time = 1.2999999999999998
+
+[node name="Goblin_Red" parent="Timers" unique_id=851927008 instance=ExtResource("8_i2y2s")]
+position = Vector2(-794, -167)
 
 [node name="Pickups" type="Node" parent="." unique_id=554653531]
 
