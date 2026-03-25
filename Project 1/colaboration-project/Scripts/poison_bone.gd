@@ -5,6 +5,7 @@ extends Area2D
 @onready var additional_health: ProgressBar = $"../../Player/AdditionalHealth"
 
 #func _on_area_entered(_area: Area2D) -> void:
+#sfsdfafas
 
 
 
