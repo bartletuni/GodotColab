@@ -11,20 +11,15 @@ const GOBLIN_SPEED = 250
 
 var enemy_health = GOBLIN_HEALTH
 
+func _ready() -> void:
+	pass
+
 func _physics_process(delta: float) -> void:
 	pass
 
 
 func _on_detection_radius_area_entered(area: Area2D) -> void:
-	var direction = (player.global_position - global_position).normalized()
-	#var direction = global_position.direction_to(player.global_position)
-	var detected_bodies = detection_radius.get_overlapping_bodies()
-	var bodies_number = detected_bodies.size()
-	
-	if bodies_number >= 0:
-		animated_sprite_2d.play("Walk")
-		velocity = direction * GOBLIN_SPEED
-		move_and_slide()
+	pass
 	
 func _on_damage_box_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player Objects"):

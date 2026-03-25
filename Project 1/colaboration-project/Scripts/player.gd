@@ -26,10 +26,10 @@ func _physics_process(delta: float) -> void:
 	
 	var facing = animated_sprite_2d.flip_h
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var attack_down := Input.is_action_just_pressed("attack_down")
-	var attack_up := Input.is_action_just_pressed("attack_up")
-	var attack_left := Input.is_action_just_pressed("attack_left")
-	var attack_right := Input.is_action_just_pressed("attack_right")
+	var attack_down := Input.is_action_pressed("attack_down")
+	var attack_up := Input.is_action_pressed("attack_up")
+	var attack_left := Input.is_action_pressed("attack_left")
+	var attack_right := Input.is_action_pressed("attack_right")
 	
 	if animated_sprite_2d.animation == "attack_side" and animated_sprite_2d.is_playing():
 		velocity = direction * 200
