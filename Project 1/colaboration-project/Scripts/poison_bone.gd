@@ -13,3 +13,4 @@ func _on_area_entered(_area: Area2D) -> void:
 		player.player_health -= 1
 		health_bar.value = player.player_health
 		queue_free()
+#Please work!
