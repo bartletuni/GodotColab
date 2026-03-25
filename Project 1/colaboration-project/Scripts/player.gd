@@ -25,7 +25,10 @@ func _physics_process(delta: float) -> void:
 	
 	var facing = animated_sprite_2d.flip_h
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var attack := Input.is_action_just_pressed("attack")
+	var attack_down := Input.is_action_just_pressed("attack_down")
+	var attack_up := Input.is_action_just_pressed("attack_up")
+	var attack_left := Input.is_action_just_pressed("attack_left")
+	var attack_right := Input.is_action_just_pressed("attack_right")
 	
 	if animated_sprite_2d.animation == "attack_side" and animated_sprite_2d.is_playing():
 		move_and_slide()
@@ -53,7 +56,13 @@ func _physics_process(delta: float) -> void:
 	elif intX != 0 or intY != 0:
 		animated_sprite_2d.play("run")
 	
-	if attack == true:
+	if attack_right == true:
+		animated_sprite_2d.play("attack_side")
+		right_box.set_deferred("disabled", false)
+		await get_tree().create_timer(1.1).timeout
+		right_box.set_deferred("disabled", true)
+		await get_tree().create_timer(1.0).timeout
+		
 		attack_timer.start()
 	
 	health_bar.max_value = HEALTH
@@ -86,18 +95,18 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 			health_bar.value = player_health
 
 
-func _on_attack_timer_timeout() -> void:
-	if animated_sprite_2d.flip_h == false:
-		animated_sprite_2d.play("attack_side")
-		right_box.set_deferred("disabled", false)
-		await get_tree().create_timer(1.1).timeout
-		right_box.set_deferred("disabled", true)
-		await get_tree().create_timer(1.0).timeout
-	elif animated_sprite_2d.flip_h == true:
-		animated_sprite_2d.flip_h = true
-		animated_sprite_2d.play("attack_side")
-		left_box.set_deferred("disabled", false)
-		await get_tree().create_timer(1.1).timeout
-		left_box.set_deferred("disabled", true)
-		animated_sprite_2d.flip_h = false
-		await get_tree().create_timer(1.0).timeout
+#func _on_attack_timer_timeout() -> void:
+	#if animated_sprite_2d.flip_h == false:
+		#animated_sprite_2d.play("attack_side")
+		#right_box.set_deferred("disabled", false)
+		#await get_tree().create_timer(1.1).timeout
+		#right_box.set_deferred("disabled", true)
+		#await get_tree().create_timer(1.0).timeout
+	#elif animated_sprite_2d.flip_h == true:
+		#animated_sprite_2d.flip_h = true
+		#animated_sprite_2d.play("attack_side")
+		#left_box.set_deferred("disabled", false)
+		#await get_tree().create_timer(1.1).timeout
+		#left_box.set_deferred("disabled", true)
+		#animated_sprite_2d.flip_h = false
+		#await get_tree().create_timer(1.0).timeout
