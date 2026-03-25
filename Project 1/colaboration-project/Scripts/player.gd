@@ -86,19 +86,18 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 			health_bar.value = player_health
 
 
-#func _on_attack_timer_timeout() -> void:
-	#if animated_sprite_2d.flip_h == false:
-		#animated_sprite_2d.play("attack_side")
-		#right_box.set_deferred("disabled", false)
-		#await get_tree().create_timer(1.1).timeout
-		#right_box.set_deferred("disabled", true)
-		##await get_tree().create_timer(1.0).timeout
-	#elif animated_sprite_2d.flip_h == true:
-		#animated_sprite_2d.flip_h = true
-		#animated_sprite_2d.play("attack_side")
-		#left_box.set_deferred("disabled", false)
-		#await get_tree().create_timer(1.1).timeout
-		#left_box.set_deferred("disabled", true)
-		#animated_sprite_2d.flip_h = false
-		##await get_tree().create_timer(1.0).timeout
-		#counter -= 1
+func _on_attack_timer_timeout() -> void:
+	if animated_sprite_2d.flip_h == false:
+		animated_sprite_2d.play("attack_side")
+		right_box.set_deferred("disabled", false)
+		await get_tree().create_timer(1.1).timeout
+		right_box.set_deferred("disabled", true)
+		await get_tree().create_timer(1.0).timeout
+	elif animated_sprite_2d.flip_h == true:
+		animated_sprite_2d.flip_h = true
+		animated_sprite_2d.play("attack_side")
+		left_box.set_deferred("disabled", false)
+		await get_tree().create_timer(1.1).timeout
+		left_box.set_deferred("disabled", true)
+		animated_sprite_2d.flip_h = false
+		await get_tree().create_timer(1.0).timeout

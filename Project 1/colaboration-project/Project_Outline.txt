@@ -4,5 +4,5 @@ Add enemy attack
 Add enemy spawning
 Add pickups
 	types:
-Add curreny
+Add currency
 Create world
