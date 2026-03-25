@@ -354,16 +354,16 @@ radius = 17.0
 height = 58.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l8qxc"]
-size = Vector2(50, 71)
+size = Vector2(67, 71)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ng366"]
-size = Vector2(50, 69)
+size = Vector2(67, 69)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vidr"]
-size = Vector2(104, 41)
+size = Vector2(104, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmw2k"]
-size = Vector2(104, 46)
+size = Vector2(104, 70)
 
 [node name="Player" type="CharacterBody2D" unique_id=954826217 groups=["Player Objects"]]
 collision_layer = 3
@@ -393,22 +393,22 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="right_box" type="CollisionShape2D" parent="damagebox" unique_id=97490368 groups=["Player Objects"]]
-position = Vector2(52, -0.5)
+position = Vector2(60.5, -0.5)
 shape = SubResource("RectangleShape2D_l8qxc")
 disabled = true
 
 [node name="left_box" type="CollisionShape2D" parent="damagebox" unique_id=1372182585 groups=["Player Objects"]]
-position = Vector2(-52, -0.5)
+position = Vector2(-60.5, -0.5)
 shape = SubResource("RectangleShape2D_ng366")
 disabled = true
 
 [node name="up_box" type="CollisionShape2D" parent="damagebox" unique_id=1106387145 groups=["Player Objects"]]
-position = Vector2(0, -39.5)
+position = Vector2(0, -51)
 shape = SubResource("RectangleShape2D_6vidr")
 disabled = true
 
 [node name="down_box" type="CollisionShape2D" parent="damagebox" unique_id=1316986806 groups=["Player Objects"]]
-position = Vector2(0, 42)
+position = Vector2(0, 54)
 shape = SubResource("RectangleShape2D_wmw2k")
 disabled = true
 
