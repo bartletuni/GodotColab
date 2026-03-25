@@ -1,10 +1,10 @@
 extends Area2D
+
 @onready var player: CharacterBody2D = $"../../Player"
 @onready var health_bar: ProgressBar = $"../../Player/HealthBar"
 @onready var additional_health: ProgressBar = $"../../Player/AdditionalHealth"
 
-func _on_body_entered(body: Node2D) -> void:
-	
+func _on_area_entered(area: Area2D) -> void:	
 	if player.player_health == 5 and player.player_shield < 5:
 		additional_health.value += 1
 		player.player_shield += 1
