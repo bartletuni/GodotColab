@@ -45,22 +45,6 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 
-#func _on_hitbox_body_entered(body: Node2D) -> void:
-	#if body.is_in_group("Hazards"):
-		#print("wee")	
-#
-	#if player_health == 1:
-		#timer.start()
-		#reload_timer.start()
-	#
-	#if player_shield > 0:
-		#player_shield -= 1
-		#additional_health.value = player_shield
-	#else:
-		#player_health -= 1
-		#health_bar.value = player_health
-	
-
 func _on_timer_timeout() -> void:
 	animated_sprite_2d.play("death")
 	
