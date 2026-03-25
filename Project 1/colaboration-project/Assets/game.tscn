@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://cxns1a5a1mn7o"]
 
 [ext_resource type="Texture2D" uid="uid://b02do8lf3uslg" path="res://Sprites/Tiny Swords (Update 010)/Terrain/Ground/Tilemap_Flat.png" id="1_53jbt"]
+[ext_resource type="PackedScene" uid="uid://dx4blwinm0bcr" path="res://Assets/poison_bone.tscn" id="2_ho2al"]
 [ext_resource type="PackedScene" uid="uid://be7iyxjfkhmky" path="res://Assets/Player.tscn" id="2_n1j1f"]
 [ext_resource type="Texture2D" uid="uid://dlgch1yn3i01x" path="res://Sprites/Tiny Swords (Free Pack)/Terrain/Tileset/Tilemap_color2.png" id="2_ogrtk"]
 [ext_resource type="PackedScene" uid="uid://b5yifq0uj6oq4" path="res://Assets/collision_test.tscn" id="3_n1j1f"]
@@ -237,6 +238,9 @@ tile_set = SubResource("TileSet_muavb")
 y_sort_enabled = true
 tile_set = SubResource("TileSet_0hivi")
 
+[node name="PoisonBone" parent="Obstacles" unique_id=157582885 instance=ExtResource("2_ho2al")]
+position = Vector2(-359, 185)
+
 [node name="Node2D" parent="Obstacles" unique_id=1139196861 instance=ExtResource("5_0hivi")]
 position = Vector2(-154, 1)
 
@@ -257,5 +261,6 @@ wait_time = 1.2999999999999998
 
 [node name="Pickups" type="Node" parent="." unique_id=554653531]
 
+[connection signal="area_entered" from="Obstacles/PoisonBone" to="Obstacles/PoisonBone" method="_on_area_entered"]
 [connection signal="timeout" from="Timers/Timer" to="Player" method="_on_timer_timeout"]
 [connection signal="timeout" from="Timers/ReloadTimer" to="Player" method="_on_reload_timer_timeout"]
