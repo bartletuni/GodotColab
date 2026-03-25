@@ -538,17 +538,14 @@ sources/0 = SubResource("TileSetAtlasSource_53jbt")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0hivi"]
 bg_color = Color(0.91344476, 0.18366334, 0.4073131, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ogrtk"]
 bg_color = Color(0.19033411, 0.6537041, 0.28648335, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7w0at"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ho2al"]
+bg_color = Color(0.18149072, 0.49580824, 0.71585286, 1)
 
 [node name="Game" type="Node2D" unique_id=298541792]
 
@@ -562,6 +559,27 @@ position = Vector2(196, 37)
 [node name="MiniShroom" parent="." unique_id=1140586198 instance=ExtResource("4_7w0at")]
 position = Vector2(-368, 29)
 
+[node name="MiniShroom2" parent="." unique_id=1238981249 instance=ExtResource("4_7w0at")]
+position = Vector2(-324, -70)
+
+[node name="MiniShroom3" parent="." unique_id=2067600832 instance=ExtResource("4_7w0at")]
+position = Vector2(-212, -121)
+
+[node name="MiniShroom4" parent="." unique_id=1689082595 instance=ExtResource("4_7w0at")]
+position = Vector2(-215, 37)
+
+[node name="MiniShroom5" parent="." unique_id=2090710297 instance=ExtResource("4_7w0at")]
+position = Vector2(-307, 149)
+
+[node name="MiniShroom6" parent="." unique_id=2134359761 instance=ExtResource("4_7w0at")]
+position = Vector2(-183, 176)
+
+[node name="MiniShroom7" parent="." unique_id=1245947924 instance=ExtResource("4_7w0at")]
+position = Vector2(-13, -206)
+
+[node name="MiniShroom8" parent="." unique_id=888409607 instance=ExtResource("4_7w0at")]
+position = Vector2(-86, -143)
+
 [node name="Player" parent="." unique_id=954826217 instance=ExtResource("2_n1j1f")]
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=787990730]
@@ -570,13 +588,23 @@ position_smoothing_speed = 10.0
 
 [node name="HealthBar" type="ProgressBar" parent="Player" unique_id=1802798618]
 offset_left = -36.0
-offset_top = -70.0
+offset_top = -84.0
 offset_right = 36.0
-offset_bottom = -43.0
+offset_bottom = -57.0
 theme = SubResource("Theme_7w0at")
 theme_override_styles/background = SubResource("StyleBoxFlat_0hivi")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ogrtk")
 value = 100.0
+show_percentage = false
+
+[node name="AdditionalHealth" type="ProgressBar" parent="Player" unique_id=1586657327]
+offset_left = 35.0
+offset_top = -84.0
+offset_right = 97.0
+offset_bottom = -57.0
+theme_override_styles/background = SubResource("StyleBoxEmpty_7w0at")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ho2al")
+max_value = 5.0
 show_percentage = false
 
 [node name="Timers" type="Node" parent="." unique_id=1941046841]

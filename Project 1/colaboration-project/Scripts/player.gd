@@ -6,10 +6,13 @@ extends CharacterBody2D
 @onready var timer: Timer = $"../Timers/Timer"
 @onready var reload_timer: Timer = $"../Timers/ReloadTimer"
 @onready var health_bar: ProgressBar = $HealthBar
+@onready var additional_health: ProgressBar = $AdditionalHealth
 
 const SPEED = 450.0
 const HEALTH = 5
+const SHIELD = 0
 
+var player_shield = SHIELD 
 var player_health = HEALTH + 1
 
 func _physics_process(delta: float) -> void:
@@ -46,9 +49,13 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 	if player_health == 1:
 		timer.start()
 		reload_timer.start()
-		
-	player_health -= 1
-	health_bar.value = player_health
+	
+	if player_shield > 0:
+		player_shield -= 1
+		additional_health.value = player_shield
+	else:
+		player_health -= 1
+		health_bar.value = player_health
 	
 
 func _on_timer_timeout() -> void:
