@@ -278,4 +278,5 @@ shape = SubResource("CapsuleShape2D_pvkfu")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox" unique_id=1307380024]
 shape = SubResource("CapsuleShape2D_1fna3")
 
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]

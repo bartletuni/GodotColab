@@ -8,12 +8,12 @@ size = Vector2(171, 221)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7iho2"]
 size = Vector2(158, 206)
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1160183672]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1160183672 groups=["Player Objects"]]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1285113993]
 texture = ExtResource("1_7iho2")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=813330744]
+[node name="Area2D" type="Area2D" parent="." unique_id=813330744 groups=["Hazards"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=87896079]
 position = Vector2(-4.5, -11.5)

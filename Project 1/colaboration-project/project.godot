@@ -15,6 +15,12 @@ run/main_scene="uid://cxns1a5a1mn7o"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[global_group]
+
+Enemies="Damaging enemies"
+Hazards="Environmental dangers"
+"Player Objects"="Objects related to the player"
+
 [input]
 
 move_up={
