@@ -13,7 +13,7 @@ const HEALTH = 5
 const SHIELD = 0
 
 var player_shield = SHIELD 
-var player_health = HEALTH + 1
+var player_health = HEALTH
 
 func _physics_process(delta: float) -> void:
 	
