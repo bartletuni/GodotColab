@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bh356pmgw328u"]
+
+[ext_resource type="Texture2D" uid="uid://cpmsj2kq5ktq3" path="res://Sprites/Tiny Swords (Update 010)/Deco/17.png" id="1_hsb77"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wkopu"]
+size = Vector2(18, 50)
+
+[node name="Node2D" type="Node2D" unique_id=1139196861]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1090880714]
+texture = ExtResource("1_hsb77")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=899906312]
+position = Vector2(1, 3)
+shape = SubResource("RectangleShape2D_wkopu")
