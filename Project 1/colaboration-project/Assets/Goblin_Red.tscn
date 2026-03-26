@@ -393,6 +393,7 @@ shape = SubResource("CapsuleShape2D_o0h01")
 [node name="detection_radius" type="Area2D" parent="." unique_id=8818283]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="detection_radius" unique_id=424627140]
+scale = Vector2(0.7, 0.7)
 shape = SubResource("CircleShape2D_2vk6v")
 
 [node name="hitbox" type="Area2D" parent="." unique_id=1065638569 groups=["Enemies"]]
@@ -416,6 +417,8 @@ show_percentage = false
 [node name="IdleTimer" type="Timer" parent="." unique_id=1422072220]
 wait_time = 2.0
 one_shot = true
+
+[node name="Navigation" type="NavigationAgent2D" parent="." unique_id=1915600666]
 
 [connection signal="area_entered" from="damage_box" to="." method="_on_damage_box_area_entered"]
 [connection signal="area_entered" from="detection_radius" to="." method="_on_detection_radius_area_entered"]

@@ -22,9 +22,8 @@ var player_shield = SHIELD
 var player_health = HEALTH
 var is_attacking = false
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	
-	var facing = animated_sprite_2d.flip_h
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var attack_down := Input.is_action_pressed("attack_down")
 	var attack_up := Input.is_action_pressed("attack_up")

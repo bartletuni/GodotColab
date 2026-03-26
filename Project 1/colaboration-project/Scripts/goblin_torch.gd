@@ -5,6 +5,7 @@ extends CharacterBody2D
 @onready var detection_radius: Area2D = $detection_radius
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var damage_box: Area2D = $damage_box
+@onready var navigation: NavigationAgent2D = $Navigation
 
 const GOBLIN_HEALTH = 3
 const GOBLIN_SPEED = 250
@@ -21,11 +22,13 @@ func _ready() -> void:
 	$IdleTimer.start()
 	home_position = global_position
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	match current_state:
+		
 		EnemyState.IDLE:
 			velocity = Vector2.ZERO
 			animated_sprite_2d.play("Idle")
+			
 		EnemyState.WANDER:
 			var direction = (wander_target - global_position).normalized()
 			if direction.x < 0:
@@ -35,18 +38,32 @@ func _physics_process(delta: float) -> void:
 			velocity = direction * GOBLIN_SPEED/2
 			move_and_slide()
 			animated_sprite_2d.play("Walk")
+			
 			if global_position.distance_to(wander_target) < 10:
 				current_state = EnemyState.IDLE
 				$IdleTimer.start()
+				
 		EnemyState.FOLLOW:
-			pass
+			navigation.target_position = player.global_position
+			animated_sprite_2d.play("Walk")
+			
+			if global_position.x - player.global_position.x > 0:
+				animated_sprite_2d.flip_h = true
+			else:
+				animated_sprite_2d.flip_h = false
+			var next_path_pos = navigation.get_next_path_position()
+			var walkdirection = (next_path_pos - global_position).normalized()
+			
+			velocity = walkdirection * GOBLIN_SPEED
+			move_and_slide()
 		EnemyState.DEATH:
 			death_anim()
 
 
 
 func _on_detection_radius_area_entered(area: Area2D) -> void:
-	pass
+	if area.is_in_group("Player"):
+		current_state = EnemyState.FOLLOW
 	
 func _on_damage_box_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player Objects"):
