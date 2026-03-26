@@ -1,5 +1,9 @@
 [gd_scene format=3 uid="uid://crlyrcwtqwupn"]
 
-[ext_resource type="PackedScene" uid="uid://crlyrcwtqwupn" path="res://Assets/red_castle.tscn" id="1_vukls"]
+[ext_resource type="PackedScene" uid="uid://vxd1uvbooi8m" path="res://Assets/purple_castle.tscn" id="1_4tcob"]
+[ext_resource type="Texture2D" uid="uid://dk6mu5pqppggh" path="res://Sprites/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Red.png" id="1_vukls"]
 
-[node name="StaticBody2D" unique_id=996332675 instance=ExtResource("1_vukls")]
+[node name="StaticBody2D" unique_id=996332675 instance=ExtResource("1_4tcob")]
+
+[node name="Sprite2D" parent="." index="0" unique_id=1914592893]
+texture = ExtResource("1_vukls")

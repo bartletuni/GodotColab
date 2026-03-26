@@ -15,7 +15,7 @@ extends CharacterBody2D
 @onready var attack_timer: Timer = $attack_timer
 
 const SPEED = 450.0
-const HEALTH = 5
+const HEALTH = 5.0
 const SHIELD = 0
 
 var player_shield = SHIELD 
@@ -23,7 +23,6 @@ var player_health = HEALTH
 var is_attacking = false
 
 func _physics_process(delta: float) -> void:
-	
 	var facing = animated_sprite_2d.flip_h
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var attack_down := Input.is_action_pressed("attack_down")
@@ -99,7 +98,7 @@ func _physics_process(delta: float) -> void:
 		
 		attack_timer.start()
 	
-	health_bar.max_value = HEALTH
+	health_bar.max_value = 5
 	
 	move_and_slide()
 	
@@ -123,3 +122,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		else:
 			player_health -= 1
 			health_bar.value = player_health
+
+
+func _on_dungeon_entrance_area_entered(area: Area2D) -> void:
+	get_tree().change_scene_to_file("res://Assets/purple_castle_spawn_scene.tscn")
