@@ -417,9 +417,17 @@ show_percentage = false
 [node name="IdleTimer" type="Timer" parent="." unique_id=1422072220]
 wait_time = 2.0
 one_shot = true
+autostart = true
+
+[node name="DeAgro_Timer" type="Timer" parent="." unique_id=617258686]
+wait_time = 10.0
+one_shot = true
 
 [node name="Navigation" type="NavigationAgent2D" parent="." unique_id=1915600666]
+avoidance_enabled = true
 
 [connection signal="area_entered" from="damage_box" to="." method="_on_damage_box_area_entered"]
 [connection signal="area_entered" from="detection_radius" to="." method="_on_detection_radius_area_entered"]
+[connection signal="area_exited" from="detection_radius" to="." method="_on_detection_radius_area_exited"]
 [connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]
+[connection signal="timeout" from="DeAgro_Timer" to="." method="_on_de_agro_timer_timeout"]

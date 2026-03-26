@@ -19,7 +19,6 @@ var wander_target : Vector2
 
 
 func _ready() -> void:
-	$IdleTimer.start()
 	home_position = global_position
 
 func _physics_process(_delta: float) -> void:
@@ -53,9 +52,9 @@ func _physics_process(_delta: float) -> void:
 				animated_sprite_2d.flip_h = false
 			var next_path_pos = navigation.get_next_path_position()
 			var walkdirection = (next_path_pos - global_position).normalized()
-			
 			velocity = walkdirection * GOBLIN_SPEED
 			move_and_slide()
+			
 		EnemyState.DEATH:
 			death_anim()
 
@@ -86,3 +85,12 @@ func _on_idle_timer_timeout() -> void:
 		var random_distance = randf_range(0, 400)
 		wander_target = home_position + (random_direction * random_distance)
 		current_state = EnemyState.WANDER
+
+
+func _on_detection_radius_area_exited(area: Area2D) -> void:
+	if area.is_in_group("Player"):
+		$DeAgro_Timer.start()
+		
+
+func _on_de_agro_timer_timeout() -> void:
+	current_state = EnemyState.WANDER
