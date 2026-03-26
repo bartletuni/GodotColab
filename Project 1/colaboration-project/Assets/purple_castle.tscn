@@ -6,9 +6,6 @@
 radius = 34.0
 height = 322.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4tcob"]
-size = Vector2(46, 34)
-
 [node name="StaticBody2D" type="StaticBody2D" unique_id=996332675]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1914592893]
@@ -20,10 +17,3 @@ offset = Vector2(0, -56.79999)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1188261757]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_vukls")
-
-[node name="Area2D" type="Area2D" parent="." unique_id=1775498132]
-position = Vector2(0, -70)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=307483467]
-position = Vector2(0, 105)
-shape = SubResource("RectangleShape2D_4tcob")
