@@ -1,8 +1,12 @@
-Add player attack
-Add enemy functionalty
+Add player attack DONE
+Add enemy functionalty DONE
 Add enemy attack
 Add enemy spawning
 Add pickups
 	types:
 Add currency
 Create world
+	dungeons
+	new area loading
+UI
+	

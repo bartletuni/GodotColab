@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cjkn47hvx6bbx"]
+
+[ext_resource type="Texture2D" uid="uid://c2mmb2u88i81r" path="res://Sprites/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Destroyed.png" id="1_5ur6f"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vukls"]
+radius = 34.0
+height = 368.0
+
+[node name="StaticBody2D" type="StaticBody2D" unique_id=996332675]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1914592893]
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("1_5ur6f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1188261757]
+position = Vector2(3, 63)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_vukls")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1775498132]

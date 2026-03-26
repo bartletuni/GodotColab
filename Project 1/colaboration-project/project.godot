@@ -21,6 +21,7 @@ Enemies="Damaging enemies"
 Hazards="Environmental dangers"
 "Player Objects"="Objects related to the player"
 Player="The player character."
+Obstacles="Environmental objects"
 
 [input]
 

@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@onready var player: CharacterBody2D = $"."
+@onready var player: CharacterBody2D = $"../Obstacles/Player"
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var detection_radius: Area2D = $detection_radius
 @onready var health_bar: ProgressBar = $HealthBar

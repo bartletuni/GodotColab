@@ -3,8 +3,8 @@ extends CharacterBody2D
 @onready var player: CharacterBody2D = $"."
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hitbox: Area2D = $hitbox
-@onready var timer: Timer = $"../Timers/Timer"
-@onready var reload_timer: Timer = $"../Timers/ReloadTimer"
+@onready var timer: Timer = $"../../Timers/Timer"
+@onready var reload_timer: Timer = $"../../Timers/ReloadTimer"
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var additional_health: ProgressBar = $AdditionalHealth
 @onready var damagebox: Area2D = $damagebox
@@ -68,7 +68,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.play("attack_side")
 		await get_tree().create_timer(0.3).timeout
 		right_box.set_deferred("disabled", false)
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.25).timeout
 		right_box.set_deferred("disabled", true)
 		await get_tree().create_timer(1.0).timeout
 		
@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.play("attack_side")
 		await get_tree().create_timer(0.3).timeout
 		left_box.set_deferred("disabled", false)
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.25).timeout
 		left_box.set_deferred("disabled", true)
 		await get_tree().create_timer(1.0).timeout
 		
@@ -85,7 +85,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.play("attack_up")
 		await get_tree().create_timer(0.3).timeout
 		up_box.set_deferred("disabled", false)
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.25).timeout
 		up_box.set_deferred("disabled", true)
 		await get_tree().create_timer(1.0).timeout
 		
@@ -93,7 +93,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.play("attack_down")
 		await get_tree().create_timer(0.3).timeout
 		down_box.set_deferred("disabled", false)
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.25).timeout
 		down_box.set_deferred("disabled", true)
 		await get_tree().create_timer(1.0).timeout
 		
