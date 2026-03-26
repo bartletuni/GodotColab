@@ -68,7 +68,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.play("attack_side")
 		await get_tree().create_timer(0.3).timeout
 		right_box.set_deferred("disabled", false)
-		await get_tree().create_timer(1.1).timeout
+		await get_tree().create_timer(0.5).timeout
 		right_box.set_deferred("disabled", true)
 		await get_tree().create_timer(1.0).timeout
 		
@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.play("attack_side")
 		await get_tree().create_timer(0.3).timeout
 		left_box.set_deferred("disabled", false)
-		await get_tree().create_timer(1.1).timeout
+		await get_tree().create_timer(0.5).timeout
 		left_box.set_deferred("disabled", true)
 		await get_tree().create_timer(1.0).timeout
 		
@@ -85,7 +85,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.play("attack_up")
 		await get_tree().create_timer(0.3).timeout
 		up_box.set_deferred("disabled", false)
-		await get_tree().create_timer(1.1).timeout
+		await get_tree().create_timer(0.5).timeout
 		up_box.set_deferred("disabled", true)
 		await get_tree().create_timer(1.0).timeout
 		
@@ -93,7 +93,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.play("attack_down")
 		await get_tree().create_timer(0.3).timeout
 		down_box.set_deferred("disabled", false)
-		await get_tree().create_timer(1.1).timeout
+		await get_tree().create_timer(0.5).timeout
 		down_box.set_deferred("disabled", true)
 		await get_tree().create_timer(1.0).timeout
 		
@@ -106,8 +106,6 @@ func _physics_process(delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	animated_sprite_2d.play("death")
-	
-
 
 func _on_reload_timer_timeout() -> void:
 	get_tree().reload_current_scene()

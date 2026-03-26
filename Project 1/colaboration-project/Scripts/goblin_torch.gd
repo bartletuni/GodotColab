@@ -9,7 +9,7 @@ extends CharacterBody2D
 const GOBLIN_HEALTH = 3
 const GOBLIN_SPEED = 250
 
-enum EnemyState {IDLE, WANDER, FOLLOW}
+enum EnemyState {IDLE, WANDER, FOLLOW, DEATH}
 
 var enemy_health = GOBLIN_HEALTH
 var current_state = EnemyState.IDLE
@@ -40,6 +40,8 @@ func _physics_process(delta: float) -> void:
 				$IdleTimer.start()
 		EnemyState.FOLLOW:
 			pass
+		EnemyState.DEATH:
+			death_anim()
 
 
 
@@ -50,13 +52,16 @@ func _on_damage_box_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player Objects"):
 		if enemy_health == 1:
 			health_bar.value = enemy_health - 1
-			animated_sprite_2d.play("death")
-			await get_tree().create_timer(1.3).timeout
-			queue_free()
+			current_state = EnemyState.DEATH
 		else:
 			enemy_health -= 1
 			health_bar.value = enemy_health
-
+			
+func death_anim():
+	health_bar.value = enemy_health - 1
+	animated_sprite_2d.play("death")
+	await get_tree().create_timer(1.3).timeout
+	queue_free()
 
 func _on_idle_timer_timeout() -> void:
 	if current_state == EnemyState.IDLE:
