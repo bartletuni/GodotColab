@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 Enemies="Damaging enemies"
 Hazards="Environmental dangers"
 "Player Objects"="Objects related to the player"
+Player="The player character."
 
 [input]
 
