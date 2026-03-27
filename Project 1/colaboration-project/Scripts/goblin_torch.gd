@@ -46,14 +46,11 @@ func _physics_process(_delta: float) -> void:
 			navigation.target_position = player.global_position
 			animated_sprite_2d.play("Walk")
 			
-			if global_position.x - player.global_position.x > 0:
-				animated_sprite_2d.flip_h = true
-			else:
-				animated_sprite_2d.flip_h = false
 			var next_path_pos = navigation.get_next_path_position()
 			var walkdirection = (next_path_pos - global_position).normalized()
-			velocity = walkdirection * GOBLIN_SPEED
-			move_and_slide()
+			var intended_velocity = walkdirection * GOBLIN_SPEED
+			navigation.set_velocity(intended_velocity)
+			animated_sprite_2d.flip_h = walkdirection.x < 0
 			
 		EnemyState.DEATH:
 			death_anim()
@@ -94,3 +91,8 @@ func _on_detection_radius_area_exited(area: Area2D) -> void:
 
 func _on_de_agro_timer_timeout() -> void:
 	current_state = EnemyState.WANDER
+
+
+func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
+	velocity = safe_velocity * 2.5
+	move_and_slide()

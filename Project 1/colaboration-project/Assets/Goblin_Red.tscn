@@ -431,3 +431,4 @@ avoidance_enabled = true
 [connection signal="area_exited" from="detection_radius" to="." method="_on_detection_radius_area_exited"]
 [connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]
 [connection signal="timeout" from="DeAgro_Timer" to="." method="_on_de_agro_timer_timeout"]
+[connection signal="velocity_computed" from="Navigation" to="." method="_on_navigation_velocity_computed"]
