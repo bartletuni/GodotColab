@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://lboldiygr6ea" path="res://Assets/spawn_dungeon_purple.gd" id="8_1egnp"]
 [ext_resource type="PackedScene" uid="uid://d0wvheaq85c1x" path="res://Assets/Goblin_Red.tscn" id="8_i2y2s"]
 [ext_resource type="PackedScene" uid="uid://vxd1uvbooi8m" path="res://Assets/purple_castle.tscn" id="8_muavb"]
+[ext_resource type="Script" uid="uid://1d2lss1gjkbq" path="res://Scripts/dungeon_entrance.gd" id="9_1egnp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ho2al"]
 texture = ExtResource("2_ogrtk")
@@ -291,6 +292,7 @@ position = Vector2(0, -42.705)
 radius = 207.6
 
 [node name="dungeon_entrance" type="Area2D" parent="Obstacles/PurpleCastle" unique_id=2038861659]
+script = ExtResource("9_1egnp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacles/PurpleCastle/dungeon_entrance" unique_id=817286469]
 position = Vector2(0, 36)
@@ -331,4 +333,4 @@ show_percentage = false
 [connection signal="timeout" from="Timers/Timer" to="Obstacles/Player" method="_on_timer_timeout"]
 [connection signal="timeout" from="Timers/ReloadTimer" to="Obstacles/Player" method="_on_reload_timer_timeout"]
 [connection signal="area_entered" from="Obstacles/PoisonBone" to="Obstacles/PoisonBone" method="_on_area_entered"]
-[connection signal="area_entered" from="Obstacles/PurpleCastle/dungeon_entrance" to="Obstacles/Player" method="_on_dungeon_entrance_area_entered"]
+[connection signal="area_entered" from="Obstacles/PurpleCastle/dungeon_entrance" to="Obstacles/PurpleCastle/dungeon_entrance" method="_on_area_entered"]

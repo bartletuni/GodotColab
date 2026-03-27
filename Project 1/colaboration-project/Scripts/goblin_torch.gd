@@ -101,3 +101,7 @@ func _on_de_agro_timer_timeout() -> void:
 func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
 	velocity = safe_velocity * 2.5
 	move_and_slide()
+
+
+func _on_dungeon_entrance_area_entered(area: Area2D) -> void:
+	pass # Replace with function body.
