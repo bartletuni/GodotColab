@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var damage_box: Area2D = $damage_box
 @onready var navigation: NavigationAgent2D = $Navigation
+@onready var hitbox: Area2D = $hitbox
 
 const GOBLIN_HEALTH = 3
 const GOBLIN_SPEED = 250
@@ -54,6 +55,7 @@ func _physics_process(_delta: float) -> void:
 			animated_sprite_2d.flip_h = walkdirection.x < 0
 			
 		EnemyState.DEATH:
+			hitbox.set_deferred("disabled", true)
 			velocity = Vector2.ZERO
 			navigation.set_velocity(Vector2.ZERO)
 			death_anim()
