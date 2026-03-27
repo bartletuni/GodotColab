@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+@onready var goblin_red: CharacterBody2D = $"."
 @onready var player: CharacterBody2D = $"../Obstacles/Player"
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var detection_radius: Area2D = $detection_radius
@@ -53,6 +54,8 @@ func _physics_process(_delta: float) -> void:
 			animated_sprite_2d.flip_h = walkdirection.x < 0
 			
 		EnemyState.DEATH:
+			velocity = Vector2.ZERO
+			navigation.set_velocity(Vector2.ZERO)
 			death_anim()
 
 
