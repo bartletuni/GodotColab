@@ -12,7 +12,7 @@ extends CharacterBody2D
 const GOBLIN_HEALTH = 3
 const GOBLIN_SPEED = 250
 
-enum EnemyState {IDLE, WANDER, FOLLOW, DEATH}
+enum EnemyState {IDLE, WANDER, FOLLOW, ATTACK, DEATH}
 
 var enemy_health = GOBLIN_HEALTH
 var current_state = EnemyState.IDLE
@@ -53,6 +53,13 @@ func _physics_process(_delta: float) -> void:
 			var intended_velocity = walkdirection * GOBLIN_SPEED
 			navigation.set_velocity(intended_velocity)
 			animated_sprite_2d.flip_h = walkdirection.x < 0
+			if global_position.distance_to(player.global_position) < 120:
+				current_state = EnemyState.ATTACK
+			
+		EnemyState.ATTACK:
+			animated_sprite_2d.play("AttackSide")
+			if global_position.distance_to(player.global_position) >= 120:
+				current_state = EnemyState.FOLLOW
 			
 		EnemyState.DEATH:
 			hitbox.set_deferred("disabled", true)
