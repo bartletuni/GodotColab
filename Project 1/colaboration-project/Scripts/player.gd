@@ -109,6 +109,8 @@ func _on_timer_timeout() -> void:
 	animated_sprite_2d.play("death")
 
 func _on_reload_timer_timeout() -> void:
+	PlayerData.player_health = HEALTH
+	PlayerData.player_shield = SHIELD
 	get_tree().reload_current_scene()
 
 
