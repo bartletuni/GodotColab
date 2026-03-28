@@ -10,16 +10,18 @@ extends CharacterBody2D
 @onready var hitbox: Area2D = $hitbox
 @onready var hitbox_shape: CollisionShape2D = $hitbox/hitbox_shape
 
-const GOBLIN_HEALTH = 3
+const GOBLIN_MAX_HEALTH = 3
 const GOBLIN_SPEED = 250
 
 enum EnemyState {IDLE, WANDER, FOLLOW, ATTACK, DEATH}
 
-var enemy_health = GOBLIN_HEALTH
+var goblin_current_health = GOBLIN_MAX_HEALTH
 var current_state = EnemyState.IDLE
 var goblin_velocity_modify = 0
 var home_position : Vector2
 var wander_target : Vector2
+
+@export var knockbackPower: int = 5000
 
 
 func _ready() -> void:
@@ -83,9 +85,11 @@ func _physics_process(_delta: float) -> void:
 			await get_tree().create_timer(0.3).timeout
 			hitbox_shape.set_deferred("disabled", true)
 			
-			current_state = EnemyState.FOLLOW
+			if goblin_current_health != 0:
+				current_state = EnemyState.FOLLOW
 			
 		EnemyState.DEATH:
+			goblin_current_health = 0
 			hitbox.set_deferred("disabled", true)
 			velocity = Vector2.ZERO
 			navigation.set_velocity(Vector2.ZERO)
@@ -100,15 +104,16 @@ func _on_detection_radius_area_entered(area: Area2D) -> void:
 	
 func _on_damage_box_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player Objects"):
-		if enemy_health == 1:
-			health_bar.value = enemy_health - 1
+		knockback()
+		if goblin_current_health == 1:
+			health_bar.value = goblin_current_health - 1
 			current_state = EnemyState.DEATH
 		else:
-			enemy_health -= 1
-			health_bar.value = enemy_health
+			goblin_current_health -= 1
+			health_bar.value = goblin_current_health
 			
 func death_anim():
-	health_bar.value = enemy_health - 1
+	health_bar.value = goblin_current_health - 1
 	animated_sprite_2d.play("death")
 	await get_tree().create_timer(1.3).timeout
 	queue_free()
@@ -123,7 +128,7 @@ func _on_idle_timer_timeout() -> void:
 
 
 func _on_detection_radius_area_exited(area: Area2D) -> void:
-	if area.is_in_group("Player"):
+	if area.is_in_group("Player") and goblin_current_health != 0:
 		$DeAgro_Timer.start()
 		
 
@@ -135,4 +140,7 @@ func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
 	velocity = safe_velocity * goblin_velocity_modify
 	move_and_slide()
 	
-	#Goblin is making good progress!
+func knockback():
+	var knockbackDirection = (player.velocity - velocity).normalized() * knockbackPower
+	velocity = knockbackDirection
+	move_and_slide()
