@@ -57,7 +57,12 @@ func _physics_process(_delta: float) -> void:
 				current_state = EnemyState.ATTACK
 			
 		EnemyState.ATTACK:
-			animated_sprite_2d.play("AttackSide")
+			if global_position.y < player.global_position.y:
+				animated_sprite_2d.play("AttackDown")
+			elif global_position.y > player.global_position.y:
+				animated_sprite_2d.play("AttackUp")
+			else:
+				animated_sprite_2d.play("AttackSide")
 			if global_position.distance_to(player.global_position) >= 120:
 				current_state = EnemyState.FOLLOW
 			
@@ -72,6 +77,7 @@ func _physics_process(_delta: float) -> void:
 func _on_detection_radius_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
 		current_state = EnemyState.FOLLOW
+		$DeAgro_Timer.stop()
 	
 func _on_damage_box_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player Objects"):
