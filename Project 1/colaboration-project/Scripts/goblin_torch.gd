@@ -32,10 +32,12 @@ func _physics_process(_delta: float) -> void:
 			
 		EnemyState.WANDER:
 			var direction = (wander_target - global_position).normalized()
+			
 			if direction.x < 0:
 				animated_sprite_2d.flip_h = true
 			elif direction.x > 0:
 				animated_sprite_2d.flip_h = false
+				
 			velocity = direction * GOBLIN_SPEED/2
 			move_and_slide()
 			animated_sprite_2d.play("Walk")
@@ -51,13 +53,16 @@ func _physics_process(_delta: float) -> void:
 			var next_path_pos = navigation.get_next_path_position()
 			var walkdirection = (next_path_pos - global_position).normalized()
 			var intended_velocity = walkdirection * GOBLIN_SPEED
+			
 			navigation.set_velocity(intended_velocity)
 			animated_sprite_2d.flip_h = walkdirection.x < 0
+			
 			if global_position.distance_to(player.global_position) < 120:
 				current_state = EnemyState.ATTACK
 			
 		EnemyState.ATTACK:
 			animated_sprite_2d.play("AttackSide")
+			velocity = Vector2.ZERO
 			if global_position.distance_to(player.global_position) >= 120:
 				current_state = EnemyState.FOLLOW
 			
@@ -92,6 +97,7 @@ func _on_idle_timer_timeout() -> void:
 	if current_state == EnemyState.IDLE:
 		var random_direction = Vector2.RIGHT.rotated(randf_range(0, TAU))
 		var random_distance = randf_range(0, 400)
+		
 		wander_target = home_position + (random_direction * random_distance)
 		current_state = EnemyState.WANDER
 
