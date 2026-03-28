@@ -55,6 +55,9 @@ func _physics_process(_delta: float) -> void:
 			var intended_velocity = walkdirection * GOBLIN_SPEED
 			navigation.set_velocity(intended_velocity)
 			animated_sprite_2d.flip_h = walkdirection.x < 0
+			if global_position.distance_to(player.global_position) < 50:
+				navigation.set_velocity(Vector2.ZERO)
+				animated_sprite_2d.play("Idle")
 			if global_position.distance_to(player.global_position) < 85:
 				current_state = EnemyState.ATTACK
 			
