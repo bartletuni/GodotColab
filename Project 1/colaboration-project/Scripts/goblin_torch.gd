@@ -16,6 +16,7 @@ enum EnemyState {IDLE, WANDER, FOLLOW, ATTACK, DEATH}
 
 var enemy_health = GOBLIN_HEALTH
 var current_state = EnemyState.IDLE
+var goblin_velocity_modify = 0
 var home_position : Vector2
 var wander_target : Vector2
 
@@ -47,23 +48,28 @@ func _physics_process(_delta: float) -> void:
 		EnemyState.FOLLOW:
 			navigation.target_position = player.global_position
 			animated_sprite_2d.play("Walk")
+			goblin_velocity_modify = 2.5
 			
 			var next_path_pos = navigation.get_next_path_position()
 			var walkdirection = (next_path_pos - global_position).normalized()
 			var intended_velocity = walkdirection * GOBLIN_SPEED
 			navigation.set_velocity(intended_velocity)
 			animated_sprite_2d.flip_h = walkdirection.x < 0
-			if global_position.distance_to(player.global_position) < 120:
+			if global_position.distance_to(player.global_position) < 85:
 				current_state = EnemyState.ATTACK
 			
 		EnemyState.ATTACK:
-			if global_position.y < player.global_position.y:
-				animated_sprite_2d.play("AttackDown")
-			elif global_position.y > player.global_position.y:
-				animated_sprite_2d.play("AttackUp")
-			else:
+			goblin_velocity_modify = 0
+			
+			if global_position.y + 40 >= player.global_position.y and global_position.y - 40 <= player.global_position.y:
 				animated_sprite_2d.play("AttackSide")
-			if global_position.distance_to(player.global_position) >= 120:
+			elif global_position.y < player.global_position.y:
+				animated_sprite_2d.play("AttackDown")
+			else:
+				animated_sprite_2d.play("AttackUp")
+
+				
+			if global_position.distance_to(player.global_position) >= 85:
 				current_state = EnemyState.FOLLOW
 			
 		EnemyState.DEATH:
@@ -112,5 +118,5 @@ func _on_de_agro_timer_timeout() -> void:
 
 
 func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
-	velocity = safe_velocity * 2.5
+	velocity = safe_velocity * goblin_velocity_modify
 	move_and_slide()
