@@ -67,10 +67,9 @@ func _physics_process(_delta: float) -> void:
 				animated_sprite_2d.play("AttackDown")
 			else:
 				animated_sprite_2d.play("AttackUp")
-
-				
-			if global_position.distance_to(player.global_position) >= 85:
-				current_state = EnemyState.FOLLOW
+			
+			await get_tree().create_timer(0.6).timeout
+			current_state = EnemyState.FOLLOW
 			
 		EnemyState.DEATH:
 			hitbox.set_deferred("disabled", true)
