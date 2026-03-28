@@ -134,3 +134,5 @@ func _on_de_agro_timer_timeout() -> void:
 func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
 	velocity = safe_velocity * goblin_velocity_modify
 	move_and_slide()
+	
+	#Goblin is making good progress!
