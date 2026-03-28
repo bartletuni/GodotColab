@@ -357,15 +357,15 @@ radius = 18.5
 height = 58.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o0h01"]
-radius = 17.0
-height = 54.0
+radius = 20.0
+height = 64.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2vk6v"]
 radius = 529.0085
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_u84o0"]
-radius = 19.0
-height = 60.0
+radius = 66.0
+height = 132.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lsfsa"]
 bg_color = Color(0.93732095, 0.20838475, 0.38632762, 1)
@@ -400,9 +400,10 @@ shape = SubResource("CircleShape2D_2vk6v")
 
 [node name="hitbox" type="Area2D" parent="." unique_id=1065638569 groups=["Enemies"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox" unique_id=1078305949]
+[node name="hitbox_shape" type="CollisionShape2D" parent="hitbox" unique_id=1078305949]
 position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_u84o0")
+disabled = true
 debug_color = Color(0.9142106, 8.625031e-05, 0.71886444, 0.41960785)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=438853022]

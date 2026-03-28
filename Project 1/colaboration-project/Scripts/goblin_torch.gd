@@ -8,6 +8,7 @@ extends CharacterBody2D
 @onready var damage_box: Area2D = $damage_box
 @onready var navigation: NavigationAgent2D = $Navigation
 @onready var hitbox: Area2D = $hitbox
+@onready var hitbox_shape: CollisionShape2D = $hitbox/hitbox_shape
 
 const GOBLIN_HEALTH = 3
 const GOBLIN_SPEED = 250
@@ -33,10 +34,12 @@ func _physics_process(_delta: float) -> void:
 			
 		EnemyState.WANDER:
 			var direction = (wander_target - global_position).normalized()
+			
 			if direction.x < 0:
 				animated_sprite_2d.flip_h = true
 			elif direction.x > 0:
 				animated_sprite_2d.flip_h = false
+			
 			velocity = direction * GOBLIN_SPEED/2
 			move_and_slide()
 			animated_sprite_2d.play("Walk")
@@ -53,11 +56,14 @@ func _physics_process(_delta: float) -> void:
 			var next_path_pos = navigation.get_next_path_position()
 			var walkdirection = (next_path_pos - global_position).normalized()
 			var intended_velocity = walkdirection * GOBLIN_SPEED
+			
 			navigation.set_velocity(intended_velocity)
 			animated_sprite_2d.flip_h = walkdirection.x < 0
+			
 			if global_position.distance_to(player.global_position) < 50:
 				navigation.set_velocity(Vector2.ZERO)
 				animated_sprite_2d.play("Idle")
+			
 			if global_position.distance_to(player.global_position) < 85:
 				current_state = EnemyState.ATTACK
 			
@@ -70,8 +76,13 @@ func _physics_process(_delta: float) -> void:
 				animated_sprite_2d.play("AttackDown")
 			else:
 				animated_sprite_2d.play("AttackUp")
+				
+			await get_tree().create_timer(0.3).timeout
+			hitbox_shape.set_deferred("disabled", false)
 			
-			await get_tree().create_timer(0.6).timeout
+			await get_tree().create_timer(0.3).timeout
+			hitbox_shape.set_deferred("disabled", true)
+			
 			current_state = EnemyState.FOLLOW
 			
 		EnemyState.DEATH:
@@ -106,6 +117,7 @@ func _on_idle_timer_timeout() -> void:
 	if current_state == EnemyState.IDLE:
 		var random_direction = Vector2.RIGHT.rotated(randf_range(0, TAU))
 		var random_distance = randf_range(0, 400)
+		
 		wander_target = home_position + (random_direction * random_distance)
 		current_state = EnemyState.WANDER
 
