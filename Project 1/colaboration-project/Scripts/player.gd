@@ -104,7 +104,6 @@ func _physics_process(_delta: float) -> void:
 	
 	move_and_slide()
 	
-#
 #func _on_timer_timeout() -> void:
 	#animated_sprite_2d.play("death")
 

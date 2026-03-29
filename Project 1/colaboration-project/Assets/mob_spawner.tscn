@@ -12,6 +12,15 @@ _data = {
 }
 point_count = 25
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_wif7j"]
+radius = 25.019993
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21hkd"]
+bg_color = Color(0.94998986, 0.27981186, 0.38128617, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wif7j"]
+bg_color = Color(0.20314676, 0.71499705, 0.23742399, 1)
+
 [node name="Area2D" type="Area2D" unique_id=1685650096]
 script = ExtResource("1_21hkd")
 
@@ -32,6 +41,25 @@ rotation = 0.14784937
 wait_time = 3.0
 one_shot = true
 
+[node name="hitbox" type="Area2D" parent="." unique_id=1995585813]
+
+[node name="hitbox_shape" type="CollisionShape2D" parent="hitbox" unique_id=1005321533]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_wif7j")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=932449948]
+offset_left = -33.0
+offset_top = -94.0
+offset_right = 32.0
+offset_bottom = -67.0
+theme_override_styles/background = SubResource("StyleBoxFlat_21hkd")
+theme_override_styles/fill = SubResource("StyleBoxFlat_wif7j")
+max_value = 10.0
+step = 1.0
+value = 10.0
+show_percentage = false
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
