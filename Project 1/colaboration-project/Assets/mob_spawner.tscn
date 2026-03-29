@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://b4g1u11f7i2il"]
+
+[ext_resource type="Script" uid="uid://c7xdcr7y35pwt" path="res://Scripts/mob_spawner.gd" id="1_21hkd"]
+[ext_resource type="Texture2D" uid="uid://dcirrxg6u6fpe" path="res://Sprites/Tiny Swords (Update 010)/Deco/16.png" id="1_xfyi5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_21hkd"]
+radius = 362.0677
+
+[sub_resource type="Curve2D" id="Curve2D_21hkd"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, -360, 0, 0, 0, 0, 94, -346, 0, 0, 0, 0, 181, -309, 0, 0, 0, 0, 257, -253, 0, 0, 0, 0, 317, -180, 0, 0, 0, 0, 351, -90, 0, 0, 0, 0, 363, 3, 0, 0, 0, 0, 352, 94, 0, 0, 0, 0, 317, 186, 0, 0, 0, 0, 259, 259, 0, 0, 0, 0, 183, 318, 0, 0, 0, 0, 98, 350, 0, 0, 0, 0, 2, 365, 0, 0, 0, 0, -92, 353, 0, 0, 0, 0, -181, 316, 0, 0, 0, 0, -259, 259, 0, 0, 0, 0, -313, 185, 0, 0, 0, 0, -349, 97, 0, 0, 0, 0, -361, -3, 0, 0, 0, 0, -349, -88, 0, 0, 0, 0, -311, -184, 0, 0, 0, 0, -254, -256, 0, 0, 0, 0, -182, -311, 0, 0, 0, 0, -95, -347, 0, 0, 0, 0, 0, -360)
+}
+point_count = 25
+
+[node name="Area2D" type="Area2D" unique_id=1685650096]
+script = ExtResource("1_21hkd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=640745164]
+texture = ExtResource("1_xfyi5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=705674933]
+shape = SubResource("CircleShape2D_21hkd")
+
+[node name="Path2D" type="Path2D" parent="." unique_id=1809649251]
+curve = SubResource("Curve2D_21hkd")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=1626719895]
+position = Vector2(0, -360)
+rotation = 0.14784937
+
+[node name="Timer" type="Timer" parent="." unique_id=855647075]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

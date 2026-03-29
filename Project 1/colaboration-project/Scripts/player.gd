@@ -104,9 +104,9 @@ func _physics_process(_delta: float) -> void:
 	
 	move_and_slide()
 	
-
-func _on_timer_timeout() -> void:
-	animated_sprite_2d.play("death")
+#
+#func _on_timer_timeout() -> void:
+	#animated_sprite_2d.play("death")
 
 func _on_reload_timer_timeout() -> void:
 	PlayerData.player_health = HEALTH
@@ -117,7 +117,7 @@ func _on_reload_timer_timeout() -> void:
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Hazards") or area.is_in_group("Enemies"):
 		if PlayerData.player_health == 1:
-			timer.start()
+			animated_sprite_2d.play("death")
 			reload_timer.start()
 
 		if PlayerData.player_shield > 0:

@@ -6,10 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://dlgch1yn3i01x" path="res://Sprites/Tiny Swords (Free Pack)/Terrain/Tileset/Tilemap_color2.png" id="2_ogrtk"]
 [ext_resource type="PackedScene" uid="uid://b5yifq0uj6oq4" path="res://Assets/collision_test.tscn" id="3_n1j1f"]
 [ext_resource type="PackedScene" uid="uid://bcsyweygwkgon" path="res://Assets/mini_shroom.tscn" id="4_7w0at"]
-[ext_resource type="Script" uid="uid://lboldiygr6ea" path="res://Assets/spawn_dungeon_purple.gd" id="8_1egnp"]
+[ext_resource type="Script" path="res://Scripts/spawn_dungeon_purple.gd" id="8_1egnp"]
 [ext_resource type="PackedScene" uid="uid://d0wvheaq85c1x" path="res://Assets/Goblin_Red.tscn" id="8_i2y2s"]
 [ext_resource type="PackedScene" uid="uid://vxd1uvbooi8m" path="res://Assets/purple_castle.tscn" id="8_muavb"]
 [ext_resource type="Script" uid="uid://1d2lss1gjkbq" path="res://Scripts/dungeon_entrance.gd" id="9_1egnp"]
+[ext_resource type="PackedScene" uid="uid://b4g1u11f7i2il" path="res://Assets/mob_spawner.tscn" id="11_ioj8j"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ho2al"]
 texture = ExtResource("2_ogrtk")
@@ -329,6 +330,9 @@ theme_override_styles/background = SubResource("StyleBoxEmpty_7w0at")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ho2al")
 max_value = 5.0
 show_percentage = false
+
+[node name="Area2D" parent="." unique_id=1685650096 instance=ExtResource("11_ioj8j")]
+position = Vector2(548, -389)
 
 [connection signal="timeout" from="Timers/Timer" to="Obstacles/Player" method="_on_timer_timeout"]
 [connection signal="timeout" from="Timers/ReloadTimer" to="Obstacles/Player" method="_on_reload_timer_timeout"]

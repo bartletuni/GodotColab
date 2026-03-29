@@ -86,6 +86,7 @@ func _physics_process(_delta: float) -> void:
 			hitbox_shape.set_deferred("disabled", true)
 			
 			if goblin_current_health != 0:
+				hitbox_shape.set_deferred("disabled", true)
 				current_state = EnemyState.FOLLOW
 			
 		EnemyState.DEATH:
