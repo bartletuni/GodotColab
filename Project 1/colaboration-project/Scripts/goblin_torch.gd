@@ -98,7 +98,6 @@ func _physics_process(_delta: float) -> void:
 			death_anim()
 
 
-
 func _on_detection_radius_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
 		current_state = EnemyState.FOLLOW

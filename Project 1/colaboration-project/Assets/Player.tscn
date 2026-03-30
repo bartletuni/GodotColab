@@ -404,21 +404,25 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="right_box" type="CollisionShape2D" parent="damagebox" unique_id=97490368 groups=["Player Objects"]]
+unique_name_in_owner = true
 position = Vector2(60.5, -0.5)
 shape = SubResource("RectangleShape2D_l8qxc")
 disabled = true
 
 [node name="left_box" type="CollisionShape2D" parent="damagebox" unique_id=1372182585 groups=["Player Objects"]]
+unique_name_in_owner = true
 position = Vector2(-60.5, -0.5)
 shape = SubResource("RectangleShape2D_ng366")
 disabled = true
 
 [node name="up_box" type="CollisionShape2D" parent="damagebox" unique_id=1106387145 groups=["Player Objects"]]
+unique_name_in_owner = true
 position = Vector2(0, -51)
 shape = SubResource("RectangleShape2D_6vidr")
 disabled = true
 
 [node name="down_box" type="CollisionShape2D" parent="damagebox" unique_id=1316986806 groups=["Player Objects"]]
+unique_name_in_owner = true
 position = Vector2(0, 54)
 shape = SubResource("RectangleShape2D_wmw2k")
 disabled = true
