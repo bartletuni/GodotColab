@@ -9,7 +9,6 @@ extends Area2D
 var spawner_health = 10
 
 func enemy_spawning():
-	
 	while WorldData.spawn_on_player == 1:
 		var goblin_red = preload("res://Assets/Goblin_Red.tscn").instantiate()
 		path_follow_2d.progress_ratio = randf()
