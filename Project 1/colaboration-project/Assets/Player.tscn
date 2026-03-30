@@ -365,6 +365,17 @@ size = Vector2(104, 64)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmw2k"]
 size = Vector2(104, 70)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l8qxc"]
+bg_color = Color(0.9313973, 0.10210582, 0.33174372, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ng366"]
+bg_color = Color(0.325193, 0.7009416, 0.2269538, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l8qxc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6vidr"]
+bg_color = Color(0.419478, 0.5795571, 0.97920245, 1)
+
 [node name="Player" type="CharacterBody2D" unique_id=954826217 groups=["Player", "Player Objects"]]
 collision_layer = 3
 collision_mask = 3
@@ -414,6 +425,31 @@ disabled = true
 
 [node name="attack_timer" type="Timer" parent="." unique_id=106468941]
 wait_time = 0.1
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1421730117]
+unique_name_in_owner = true
+offset_left = -47.0
+offset_top = -100.0
+offset_right = 47.0
+offset_bottom = -64.0
+theme_override_styles/background = SubResource("StyleBoxFlat_l8qxc")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ng366")
+max_value = 5.0
+step = 1.0
+value = 5.0
+show_percentage = false
+
+[node name="Shield" type="ProgressBar" parent="." unique_id=1230851206]
+unique_name_in_owner = true
+offset_left = 47.0
+offset_top = -100.0
+offset_right = 134.0
+offset_bottom = -64.0
+theme_override_styles/background = SubResource("StyleBoxEmpty_l8qxc")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6vidr")
+max_value = 5.0
+step = 1.0
+show_percentage = false
 
 [connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]

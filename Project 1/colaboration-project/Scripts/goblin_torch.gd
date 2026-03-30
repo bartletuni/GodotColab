@@ -80,7 +80,8 @@ func _physics_process(_delta: float) -> void:
 				animated_sprite_2d.play("AttackUp")
 				
 			await get_tree().create_timer(0.3).timeout
-			hitbox_shape.set_deferred("disabled", false)
+			if PlayerData.player_health != 0:
+				hitbox_shape.set_deferred("disabled", false)
 			
 			await get_tree().create_timer(0.3).timeout
 			hitbox_shape.set_deferred("disabled", true)

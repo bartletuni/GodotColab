@@ -23,7 +23,6 @@ func _on_area_entered(area: Area2D) -> void:
 		path_follow_2d.progress_ratio = randf()
 		goblin_red.global_position = path_follow_2d.global_position
 		add_sibling(goblin_red)
-		goblin_red.EnemyState.FOLLOW
 		timer.start()
 		WorldData.spawn_on_player = 1
 

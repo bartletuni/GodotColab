@@ -1,14 +1,21 @@
 Add player attack DONE
 Add enemy functionalty DONE
 Add game_manager
-Add enemy attack
-Add enemy spawning
+Add enemy attack DONE
+Add enemy spawning DONE
 Add pickups
 	types:
-Add currency
+		coin/currency
+		health
+		shield
+		health and shield DONE
+		damage boost
+		speed boost
+		
+Add currency system
 Create world
 	dungeons IN PROGRESS
 	new area loading IN PROGRESS
-	persistent player data between scenes
+	persistent player data between scenes DONE
 UI
 	

@@ -1,12 +1,18 @@
 [gd_scene format=3 uid="uid://vxd1uvbooi8m"]
 
 [ext_resource type="Texture2D" uid="uid://jbo8n25cdgfp" path="res://Sprites/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Purple.png" id="1_5xeh0"]
+[ext_resource type="Script" uid="uid://6e4fcsldri1m" path="res://Scripts/purple_castle.gd" id="1_11d01"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vukls"]
 radius = 34.0
 height = 322.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_upucv"]
+size = Vector2(42, 36)
+
 [node name="StaticBody2D" type="StaticBody2D" unique_id=996332675]
+scale = Vector2(1.2, 1.2)
+script = ExtResource("1_11d01")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1914592893]
 position = Vector2(0, 1)
@@ -16,4 +22,17 @@ offset = Vector2(0, -56.79999)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1188261757]
 rotation = 1.5707964
+scale = Vector2(1.05, 1.05)
 shape = SubResource("CapsuleShape2D_vukls")
+
+[node name="enterbox" type="Area2D" parent="." unique_id=152096245]
+
+[node name="enterbox_shape" type="CollisionShape2D" parent="enterbox" unique_id=1583934517]
+position = Vector2(0, 34)
+shape = SubResource("RectangleShape2D_upucv")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1952122804]
+radius = 168.86
+vertices = PackedVector2Array(0, -156, -139, -146, -171, -122, -171, -83, -157, -63, -159, 33, -101, 67, 103, 68, 166, 35, 160, -64, 176, -83, 175, -130, 139, -153)
+
+[connection signal="area_entered" from="enterbox" to="." method="_on_enterbox_area_entered"]

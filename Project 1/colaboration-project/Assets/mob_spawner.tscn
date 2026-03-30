@@ -17,9 +17,17 @@ radius = 25.019993
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21hkd"]
 bg_color = Color(0.94998986, 0.27981186, 0.38128617, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wif7j"]
 bg_color = Color(0.20314676, 0.71499705, 0.23742399, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Area2D" type="Area2D" unique_id=1685650096]
 script = ExtResource("1_21hkd")

@@ -369,9 +369,17 @@ height = 132.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lsfsa"]
 bg_color = Color(0.93732095, 0.20838475, 0.38632762, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g1gwh"]
 bg_color = Color(0.24082497, 0.70193, 0.3160706, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Goblin_Red" type="CharacterBody2D" unique_id=851927008]
 script = ExtResource("1_2vk6v")

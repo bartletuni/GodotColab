@@ -6,7 +6,7 @@ extends CharacterBody2D
 @onready var timer: Timer = $"../../Timers/Timer"
 @onready var reload_timer: Timer = $"../../Timers/ReloadTimer"
 @onready var health_bar: ProgressBar = $HealthBar
-@onready var additional_health: ProgressBar = $AdditionalHealth
+@onready var shield: ProgressBar = $Shield
 @onready var damagebox: Area2D = $damagebox
 @onready var right_box: CollisionShape2D = $damagebox/right_box
 @onready var left_box: CollisionShape2D = $damagebox/left_box
@@ -14,15 +14,15 @@ extends CharacterBody2D
 @onready var down_box: CollisionShape2D = $damagebox/down_box
 @onready var attack_timer: Timer = $attack_timer
 
-func _ready() -> void:
-	health_bar.value = PlayerData.player_health
-	additional_health.value = PlayerData.player_shield
-
 const SPEED = 450.0
 const HEALTH = 5
 const SHIELD = 0
 
-
+func _ready() -> void:
+	PlayerData.player_health = HEALTH
+	PlayerData.player_shield = SHIELD
+	health_bar.value = PlayerData.player_health
+	shield.value = PlayerData.player_shield
 
 func _physics_process(_delta: float) -> void:
 	
@@ -31,6 +31,9 @@ func _physics_process(_delta: float) -> void:
 	var attack_up := Input.is_action_pressed("attack_up")
 	var attack_left := Input.is_action_pressed("attack_left")
 	var attack_right := Input.is_action_pressed("attack_right")
+	
+	%HealthBar.value = PlayerData.player_health
+	%Shield.value = PlayerData.player_shield
 	
 	if animated_sprite_2d.animation == "attack_side" and animated_sprite_2d.is_playing():
 		velocity = direction * 200
@@ -103,13 +106,8 @@ func _physics_process(_delta: float) -> void:
 	health_bar.max_value = HEALTH
 	
 	move_and_slide()
-	
-#func _on_timer_timeout() -> void:
-	#animated_sprite_2d.play("death")
 
 func _on_reload_timer_timeout() -> void:
-	PlayerData.player_health = HEALTH
-	PlayerData.player_shield = SHIELD
 	get_tree().reload_current_scene()
 
 
@@ -121,7 +119,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 
 		if PlayerData.player_shield > 0:
 			PlayerData.player_shield -= 1
-			additional_health.value = PlayerData.player_shield
+			shield.value = PlayerData.player_shield
 		else:
 			PlayerData.player_health -= 1
 			health_bar.value = PlayerData.player_health
