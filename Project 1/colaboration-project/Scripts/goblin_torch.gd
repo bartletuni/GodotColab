@@ -143,5 +143,5 @@ func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
 	
 func knockback():
 	var knockbackDirection = (player.velocity - velocity).normalized() * knockbackPower
-	velocity = knockbackDirection
+	velocity = knockbackDirection * 1.5
 	move_and_slide()

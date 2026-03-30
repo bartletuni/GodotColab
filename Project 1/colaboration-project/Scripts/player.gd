@@ -104,7 +104,6 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		if PlayerData.player_shield > 0:
 			PlayerData.player_shield -= 1
 			shield.value = PlayerData.player_shield
-			await get_tree().create_timer(0.5).timeout
 		else:
 			PlayerData.player_health -= 1
 			health_bar.value = PlayerData.player_health
