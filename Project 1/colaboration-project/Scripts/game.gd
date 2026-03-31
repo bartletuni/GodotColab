@@ -9,14 +9,10 @@ const ROCK_002 = preload("uid://c2q1bmcgkm16u")
 
 var mushroom_spawn_rate = 0.005
 var spawner_spawn_rate = 0.0005
-<<<<<<< Updated upstream
 var purple_castle_spawn_rate = 0.0010
 var poison_bone_spawn_rate = 0.005
 var rock001_spawn_rate = 0.005
 var rock002_spawn_rate = 0.005
-=======
-var purple_castle_spawn_rate = 0.0002
->>>>>>> Stashed changes
 
 
 var objects = [MINI_SHROOM, MOB_SPAWNER, PURPLE_CASTLE, POISON_BONE, ROCK_001, ROCK_002]
