@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 PlayerData="*uid://c44lsdkv8il62"
 WorldData="*uid://5kspgroux7fx"
+SceneManager="*uid://dxxyunkiylfqf"
 
 [global_group]
 
