@@ -116,6 +116,9 @@ func death_anim():
 	health_bar.value = goblin_current_health - 1
 	animated_sprite_2d.play("death")
 	await get_tree().create_timer(1.3).timeout
+	var gold = preload("res://Assets/gold.tscn").instantiate()
+	gold.global_position = global_position
+	add_sibling(gold)
 	queue_free()
 
 func _on_idle_timer_timeout() -> void:
