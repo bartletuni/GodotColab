@@ -248,18 +248,15 @@ tile_map_data = PackedByteArray("AAD5//3/AQAGAAEAAAD4//3/AQAGAAEAAAD4//7/AQAGAAE
 tile_set = SubResource("TileSet_muavb")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=1589881009]
-y_sort_enabled = true
 tile_set = SubResource("TileSet_0hivi")
 
-[node name="Player" parent="Obstacles" unique_id=954826217 instance=ExtResource("2_n1j1f")]
-z_index = 2
-y_sort_enabled = true
+[node name="Player" parent="." unique_id=954826217 instance=ExtResource("2_n1j1f")]
 position = Vector2(-31, 80)
 
-[node name="Camera2D" type="Camera2D" parent="Obstacles/Player" unique_id=787990730]
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=787990730]
 process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
-[connection signal="timeout" from="Timers/Timer" to="Obstacles/Player" method="_on_timer_timeout"]
-[connection signal="timeout" from="Timers/ReloadTimer" to="Obstacles/Player" method="_on_reload_timer_timeout"]
+[connection signal="timeout" from="Timers/Timer" to="Player" method="_on_timer_timeout"]
+[connection signal="timeout" from="Timers/ReloadTimer" to="Player" method="_on_reload_timer_timeout"]
