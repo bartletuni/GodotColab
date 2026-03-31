@@ -9,7 +9,7 @@ const ROCK_002 = preload("uid://c2q1bmcgkm16u")
 
 var mushroom_spawn_rate = 0.005
 var spawner_spawn_rate = 0.0005
-var purple_castle_spawn_rate = 0.0001
+var purple_castle_spawn_rate = 0.05
 var poison_bone_spawn_rate = 0.005
 var rock001_spawn_rate = 0.005
 var rock002_spawn_rate = 0.005

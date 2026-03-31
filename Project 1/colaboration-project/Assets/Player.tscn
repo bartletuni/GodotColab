@@ -432,6 +432,7 @@ wait_time = 0.1
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1421730117]
 unique_name_in_owner = true
+z_index = 1
 offset_left = -47.0
 offset_top = -100.0
 offset_right = 47.0
@@ -445,6 +446,7 @@ show_percentage = false
 
 [node name="Shield" type="ProgressBar" parent="." unique_id=1230851206]
 unique_name_in_owner = true
+z_index = 1
 offset_left = 47.0
 offset_top = -100.0
 offset_right = 134.0
