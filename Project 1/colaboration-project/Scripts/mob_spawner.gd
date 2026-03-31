@@ -10,20 +10,20 @@ var spawner_health = 10
 
 func enemy_spawning():
 	while WorldData.spawn_on_player == 1:
-		var goblin_red = preload("res://Assets/Goblin_Red.tscn").instantiate()
-		path_follow_2d.progress_ratio = randf()
-		goblin_red.global_position = path_follow_2d.global_position
-		add_sibling(goblin_red)
+		goblin_spawn()
 		await get_tree().create_timer(3).timeout
 
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player"):
-		var goblin_red = preload("res://Assets/Goblin_Red.tscn").instantiate()
-		path_follow_2d.progress_ratio = randf()
-		goblin_red.global_position = path_follow_2d.global_position
-		add_sibling(goblin_red)
+		goblin_spawn()
 		timer.start()
 		WorldData.spawn_on_player = 1
+
+func goblin_spawn():
+	var goblin_red = preload("res://Assets/Goblin_Red.tscn").instantiate()
+	path_follow_2d.progress_ratio = randf()
+	goblin_red.global_position = path_follow_2d.global_position
+	add_sibling(goblin_red)
 
 func _on_area_exited(area: Area2D) -> void:
 	if area.is_in_group("Player"):

@@ -71,7 +71,6 @@ func _physics_process(_delta: float) -> void:
 			
 		EnemyState.ATTACK:
 			goblin_velocity_modify = 0
-			
 			if global_position.y + 40 >= player.global_position.y and global_position.y - 40 <= player.global_position.y:
 				animated_sprite_2d.play("AttackSide")
 			elif global_position.y < player.global_position.y:
@@ -89,7 +88,7 @@ func _physics_process(_delta: float) -> void:
 			if goblin_current_health != 0:
 				hitbox_shape.set_deferred("disabled", true)
 				current_state = EnemyState.FOLLOW
-			
+
 		EnemyState.DEATH:
 			goblin_current_health = 0
 			hitbox.set_deferred("disabled", true)
