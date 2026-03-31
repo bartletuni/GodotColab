@@ -38,6 +38,9 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player Objects"):
 		if spawner_health == 1:
 			health_bar.value = spawner_health - 1
+			var wood = preload("res://Assets/wood.tscn").instantiate()
+			wood.global_position = global_position
+			add_sibling(wood)
 			queue_free()
 		else:
 			spawner_health -= 1

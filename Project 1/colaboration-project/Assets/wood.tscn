@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://buwptv13pxot5"]
+
+[ext_resource type="Script" uid="uid://b7ykwmxmfjckr" path="res://Scripts/wood.gd" id="1_xg08m"]
+[ext_resource type="Texture2D" uid="uid://7v2udntt02cc" path="res://Sprites/Tiny Swords (Update 010)/Resources/Resources/W_Spawn.png" id="2_ggmpe"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_buinx"]
+atlas = ExtResource("2_ggmpe")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4samj"]
+atlas = ExtResource("2_ggmpe")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gq5ll"]
+atlas = ExtResource("2_ggmpe")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rbqjm"]
+atlas = ExtResource("2_ggmpe")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_txf6s"]
+atlas = ExtResource("2_ggmpe")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3pttn"]
+atlas = ExtResource("2_ggmpe")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rr7e6"]
+atlas = ExtResource("2_ggmpe")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jos48"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_buinx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4samj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gq5ll")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rbqjm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_txf6s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3pttn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rr7e6")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k8awd"]
+radius = 9.473597
+height = 53.11894
+
+[node name="Wood" type="Area2D" unique_id=1233843635 groups=["Pickups"]]
+script = ExtResource("1_xg08m")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=324222877]
+sprite_frames = SubResource("SpriteFrames_jos48")
+autoplay = "default"
+frame = 6
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1190366338]
+position = Vector2(-3.5762787e-07, 21.999998)
+rotation = 1.1962086
+shape = SubResource("CapsuleShape2D_k8awd")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

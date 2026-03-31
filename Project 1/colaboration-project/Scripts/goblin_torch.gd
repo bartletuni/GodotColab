@@ -114,8 +114,8 @@ func _on_damage_box_area_entered(area: Area2D) -> void:
 			
 func death_anim():
 	health_bar.value = goblin_current_health - 1
-	animated_sprite_2d.play("death")
-	await get_tree().create_timer(1.3).timeout
+	#animated_sprite_2d.play("death")
+	#await get_tree().create_timer(1.3).timeout
 	var gold = preload("res://Assets/gold.tscn").instantiate()
 	gold.global_position = global_position
 	add_sibling(gold)
