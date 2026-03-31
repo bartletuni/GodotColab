@@ -252,6 +252,7 @@ y_sort_enabled = true
 tile_set = SubResource("TileSet_0hivi")
 
 [node name="Player" parent="Obstacles" unique_id=954826217 instance=ExtResource("2_n1j1f")]
+z_index = 2
 y_sort_enabled = true
 position = Vector2(-31, 80)
 
