@@ -91,7 +91,7 @@ func _on_reload_timer_timeout() -> void:
 func attack_hitbox_switch(direction):
 	await get_tree().create_timer(0.3).timeout
 	direction.set_deferred("disabled", false)
-	await get_tree().create_timer(0.25).timeout
+	await get_tree().create_timer(0.1).timeout
 	direction.set_deferred("disabled", true)
 	await get_tree().create_timer(1.0).timeout
 

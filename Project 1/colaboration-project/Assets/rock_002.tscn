@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c2q1bmcgkm16u"]
+
+[ext_resource type="Texture2D" uid="uid://73l3u0hjy4ot" path="res://Sprites/Tiny Swords (Update 010)/Deco/05.png" id="1_85ghm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q17ty"]
+radius = 13.038404
+
+[node name="Rock002" type="StaticBody2D" unique_id=1578800978]
+scale = Vector2(4, 4)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1709344895]
+texture = ExtResource("1_85ghm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=351177858]
+shape = SubResource("CircleShape2D_q17ty")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1244077056]
+radius = 19.74
+affect_navigation_mesh = true

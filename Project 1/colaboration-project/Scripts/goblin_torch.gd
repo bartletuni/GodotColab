@@ -141,6 +141,7 @@ func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
 	move_and_slide()
 	
 func knockback():
-	var knockbackDirection = (player.velocity - velocity).normalized() * knockbackPower
-	velocity = knockbackDirection * 1.5
-	move_and_slide()
+	if goblin_current_health != 0:
+		var knockbackDirection = (player.velocity - velocity).normalized() * knockbackPower
+		velocity = knockbackDirection * 1.5
+		move_and_slide()
