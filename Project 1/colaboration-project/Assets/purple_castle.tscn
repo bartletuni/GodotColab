@@ -21,7 +21,6 @@ texture = ExtResource("1_5xeh0")
 offset = Vector2(0, -56.79999)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1188261757]
-position = Vector2(0, 15.32)
 rotation = 1.5707964
 scale = Vector2(1.05, 1.05)
 shape = SubResource("CapsuleShape2D_vukls")
@@ -29,7 +28,7 @@ shape = SubResource("CapsuleShape2D_vukls")
 [node name="enterbox" type="Area2D" parent="." unique_id=152096245]
 
 [node name="enterbox_shape" type="CollisionShape2D" parent="enterbox" unique_id=1583934517]
-position = Vector2(0, 50.07)
+position = Vector2(0, 34)
 shape = SubResource("RectangleShape2D_upucv")
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1952122804]

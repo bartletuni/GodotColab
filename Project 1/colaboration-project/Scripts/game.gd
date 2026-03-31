@@ -9,7 +9,7 @@ const ROCK_002 = preload("uid://c2q1bmcgkm16u")
 
 var mushroom_spawn_rate = 0.005
 var spawner_spawn_rate = 0.0005
-var purple_castle_spawn_rate = 0.0010
+var purple_castle_spawn_rate = 0.0001
 var poison_bone_spawn_rate = 0.005
 var rock001_spawn_rate = 0.005
 var rock002_spawn_rate = 0.005
@@ -32,6 +32,6 @@ func random_spawn():
 			if randf() < spawn_rates[spawn_rate]:
 				var new_object = object.instantiate()
 				new_object.position = %Ground.map_to_local(cell)
-				%Obstacles.add_child(new_object)
+				add_child(new_object)
 		
 		spawn_rate += 1

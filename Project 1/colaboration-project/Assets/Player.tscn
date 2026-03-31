@@ -345,8 +345,9 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_l8qxc"]
-radius = 15.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pvkfu"]
+radius = 13.0
+height = 50.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1fna3"]
 radius = 17.0
@@ -376,7 +377,6 @@ bg_color = Color(0.325193, 0.7009416, 0.2269538, 1)
 bg_color = Color(0.419478, 0.5795571, 0.97920245, 1)
 
 [node name="Player" type="CharacterBody2D" unique_id=954826217 groups=["Player", "Player Objects"]]
-z_index = 2
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_ify7s")
@@ -389,8 +389,8 @@ frame = 5
 frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1278823074]
-position = Vector2(0, 13.545)
-shape = SubResource("CircleShape2D_l8qxc")
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_pvkfu")
 
 [node name="hitbox" type="Area2D" parent="." unique_id=452775688 groups=["Player"]]
 collision_layer = 3
@@ -432,7 +432,6 @@ wait_time = 0.1
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1421730117]
 unique_name_in_owner = true
-z_index = 15
 offset_left = -47.0
 offset_top = -100.0
 offset_right = 47.0
@@ -446,7 +445,6 @@ show_percentage = false
 
 [node name="Shield" type="ProgressBar" parent="." unique_id=1230851206]
 unique_name_in_owner = true
-z_index = 15
 offset_left = 47.0
 offset_top = -100.0
 offset_right = 134.0
