@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://c4elvfeh43qb4"]
+
+[ext_resource type="Script" uid="uid://csr7s3dfjc7p7" path="res://Scripts/mine.gd" id="1_53qdd"]
+[ext_resource type="Texture2D" uid="uid://b0pubsnkgg7x2" path="res://Sprites/Tiny Swords (Update 010)/Resources/Gold Mine/GoldMine_Active.png" id="1_posd2"]
+[ext_resource type="Texture2D" uid="uid://didnhbcmt226m" path="res://Sprites/Tiny Swords (Update 010)/Resources/Gold Mine/GoldMine_Destroyed.png" id="2_53qdd"]
+[ext_resource type="Texture2D" uid="uid://f88lbfi7qgff" path="res://Sprites/Tiny Swords (Update 010)/Resources/Gold Mine/GoldMine_Inactive.png" id="3_rgitd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gsa1t"]
+atlas = ExtResource("1_posd2")
+region = Rect2(0, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e32ts"]
+atlas = ExtResource("2_53qdd")
+region = Rect2(0, 0, 192, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jjd0n"]
+atlas = ExtResource("3_rgitd")
+region = Rect2(0, 0, 192, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jrqc6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gsa1t")
+}],
+"loop": false,
+"name": &"Active",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e32ts")
+}],
+"loop": false,
+"name": &"Broken",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jjd0n")
+}],
+"loop": false,
+"name": &"Deactive",
+"speed": 1.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kgnic"]
+radius = 19.0
+height = 142.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_53qdd"]
+radius = 26.0
+height = 160.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rgitd"]
+size = Vector2(36, 22)
+
+[node name="Mine" type="StaticBody2D" unique_id=978678583]
+script = ExtResource("1_53qdd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1912615570]
+sprite_frames = SubResource("SpriteFrames_jrqc6")
+animation = &"Deactive"
+autoplay = "Broken"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=615423074]
+position = Vector2(0, 14)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_kgnic")
+
+[node name="activate" type="Area2D" parent="." unique_id=1881150145]
+
+[node name="activate_shape" type="CollisionShape2D" parent="activate" unique_id=323076487]
+position = Vector2(0, 14)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_53qdd")
+
+[node name="enter" type="Area2D" parent="." unique_id=674889257]
+
+[node name="enter_shape" type="CollisionShape2D" parent="enter" unique_id=571627425]
+position = Vector2(0, 32)
+shape = SubResource("RectangleShape2D_rgitd")
+
+[connection signal="area_entered" from="activate" to="." method="_on_activate_area_entered"]
+[connection signal="area_entered" from="enter" to="." method="_on_enter_area_entered"]

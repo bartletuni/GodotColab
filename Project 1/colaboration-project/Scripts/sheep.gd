@@ -51,7 +51,7 @@ func _physics_process(_delta: float) -> void:
 				idle_timer.start()
 				
 		SheepState.FLEE:
-			navigation.target_position = player.global_position - global_position
+			navigation.target_position = player.global_position + global_position
 			animated_sprite_2d.play("Walk")
 			sheep_velocity_modify = 2.5
 			
