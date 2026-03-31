@@ -221,8 +221,6 @@ navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_ho2al")
 sources/1 = SubResource("TileSetAtlasSource_i2y2s")
 
-[sub_resource type="TileSet" id="TileSet_0hivi"]
-
 [node name="Game" type="Node2D" unique_id=298541792]
 script = ExtResource("1_1egnp")
 
@@ -247,11 +245,11 @@ tile_map_data = PackedByteArray("AAD5//3/AQAGAAEAAAD4//3/AQAGAAEAAAD4//7/AQAGAAE
 tile_set = SubResource("TileSet_muavb")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=1589881009]
+unique_name_in_owner = true
 y_sort_enabled = true
-tile_set = SubResource("TileSet_0hivi")
 
 [node name="Player" parent="Obstacles" unique_id=954826217 instance=ExtResource("2_n1j1f")]
-y_sort_enabled = true
+z_index = 0
 position = Vector2(-31, 80)
 
 [node name="Camera2D" type="Camera2D" parent="Obstacles/Player" unique_id=787990730]
