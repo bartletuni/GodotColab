@@ -73,13 +73,6 @@ func _physics_process(_delta: float) -> void:
 			navigation.set_velocity(intended_velocity)
 			if walkdirection.x != 0:
 				animated_sprite_2d.flip_h = walkdirection.x < 0
-			
-			#if global_position.distance_to(player.global_position) < 50:
-				#navigation.set_velocity(Vector2.ZERO)
-				#animated_sprite_2d.play("Idle")
-			#
-			#if global_position.distance_to(player.global_position) < 85:
-				#sheep_current_state = SheepState.FLEE
 
 		SheepState.DEATH:
 			sheep_current_health = 0
@@ -95,7 +88,7 @@ func _on_detection_radius_area_entered(area: Area2D) -> void:
 	
 func _on_damage_box_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Player Objects"):
-		knockback()
+		#knockback()
 		if sheep_current_health == 1:
 			health_bar.value = sheep_current_health - 1
 			sheep_current_state = SheepState.DEATH
@@ -133,8 +126,8 @@ func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
 	velocity = safe_velocity * sheep_velocity_modify
 	move_and_slide()
 	
-func knockback():
-	if sheep_current_health != 0:
-		var knockbackDirection = (player.velocity - velocity).normalized() * knockbackPower
-		velocity = knockbackDirection * 1.5
-		move_and_slide()
+#func knockback():
+	#if sheep_current_health != 0:
+		#var knockbackDirection = (player.velocity - velocity).normalized() * knockbackPower
+		#velocity = knockbackDirection * 1.5
+		#move_and_slide()
