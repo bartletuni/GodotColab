@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c2q1bmcgkm16u"]
 
 [ext_resource type="Texture2D" uid="uid://73l3u0hjy4ot" path="res://Sprites/Tiny Swords (Update 010)/Deco/05.png" id="1_85ghm"]
+[ext_resource type="Script" uid="uid://nqhd2gs7fndt" path="res://Scripts/rock_002.gd" id="1_q17ty"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_85ghm"]
 radius = 4.4981456
@@ -8,6 +9,7 @@ height = 23.49802
 
 [node name="Rock002" type="StaticBody2D" unique_id=1578800978]
 scale = Vector2(4, 4)
+script = ExtResource("1_q17ty")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1709344895]
 texture = ExtResource("1_85ghm")

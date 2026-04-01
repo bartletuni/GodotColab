@@ -1,5 +1,7 @@
 extends StaticBody2D
 
+var entity_id: String = "goldmine001"
+
 @onready var activate: Area2D = $activate
 @onready var enter: Area2D = $enter
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D

@@ -36,6 +36,8 @@ func random_spawn():
 			if randf() < spawn_rates[spawn_rate]:
 				var new_object = object.instantiate()
 				new_object.position = %Ground.map_to_local(cell)
+				new_object.entity_id = str(randf_range(1, 1000) * randf_range(1, 1000))
 				add_child(new_object)
+				SceneManager.restore_entity(new_object)
 		
 		spawn_rate += 1

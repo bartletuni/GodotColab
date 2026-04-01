@@ -5,10 +5,9 @@ Add enemy attack DONE
 Add enemy spawning DONE
 Add pickups
 	types:
-		coin/currency
-		health
-		shield
-		health and shield DONE
+		coin/currency DOME
+		health DONE
+		shield DONE
 		damage boost
 		speed boost
 		
@@ -16,6 +15,6 @@ Add currency system
 Create world
 	dungeons IN PROGRESS
 	new area loading IN PROGRESS
-	persistent player data between scenes DONE
+	persistent player data between scenes IN PROGRESS (LOCATION)
 UI
 	

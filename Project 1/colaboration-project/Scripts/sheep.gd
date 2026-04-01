@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+var entity_id: String = "sheep001"
+
 @onready var sheep_red: CharacterBody2D = $"."
 @onready var player: CharacterBody2D = $"../Player"
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
@@ -101,6 +103,7 @@ func death_anim():
 	var meat = preload("res://Assets/meat.tscn").instantiate()
 	meat.global_position = global_position
 	add_sibling(meat)
+	SceneManager.remove_entity(self)
 	queue_free()
 
 func _on_idle_timer_timeout() -> void:

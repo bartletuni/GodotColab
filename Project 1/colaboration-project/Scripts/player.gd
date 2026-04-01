@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+var entity_id: String = "player001"
+
 @onready var player: CharacterBody2D = $"."
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hitbox: Area2D = $hitbox
@@ -9,6 +11,7 @@ extends CharacterBody2D
 @onready var shield: ProgressBar = $Shield
 @onready var damagebox: Area2D = $damagebox
 @onready var attack_timer: Timer = $attack_timer
+@onready var label: Label = $Label
 
 const SPEED = 450.0
 const HEALTH = 5
@@ -21,6 +24,8 @@ func _ready() -> void:
 	shield.value = PlayerData.player_shield
 
 func _physics_process(_delta: float) -> void:
+
+	label.text = "Wood: " + str(PlayerData.player_wood) + " Gold: " + str(PlayerData.player_gold)
 	
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var attack_down := Input.is_action_pressed("attack_down")
@@ -30,6 +35,9 @@ func _physics_process(_delta: float) -> void:
 	
 	%HealthBar.value = PlayerData.player_health
 	%Shield.value = PlayerData.player_shield
+	
+	if PlayerData.player_health == 0:
+		animated_sprite_2d.play("death")
 	
 	if animated_sprite_2d.animation == "attack_side" and animated_sprite_2d.is_playing():
 		velocity = direction * 200

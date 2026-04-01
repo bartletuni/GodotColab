@@ -1,5 +1,7 @@
 extends Area2D
 
+var entity_id: String = "mobspawner001"
+
 @onready var path_follow_2d: PathFollow2D = $Path2D/PathFollow2D
 @onready var timer: Timer = $Timer
 @onready var hitbox: Area2D = $hitbox
@@ -41,6 +43,7 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 			var wood = preload("res://Assets/wood.tscn").instantiate()
 			wood.global_position = global_position
 			add_sibling(wood)
+			SceneManager.remove_entity(self)
 			queue_free()
 		else:
 			spawner_health -= 1

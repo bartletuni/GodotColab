@@ -1,334 +1,377 @@
 # scene_manager.gd
-# ─────────────────────────────────────────────────────────────────────────────
-# AUTOLOAD SINGLETON  –  add this in:
-#   Project > Project Settings > Autoload > path: res://scene_manager.gd
-#                                           name: SceneManager
+# =============================================================================
+# AUTOLOAD SINGLETON
+# Register in: Project > Project Settings > Autoload
+#   Path: res://scene_manager.gd
+#   Name: SceneManager
 #
-# This node lives for the entire lifetime of the game. Any script can read
-# from or write to it with:  SceneManager.<property_or_method>
-# ─────────────────────────────────────────────────────────────────────────────
+# HOW IT WORKS
+# ------------
+# 1. Call SceneManager.change_scene("res://my_scene.tscn") instead of
+#    get_tree().change_scene_to_file(). This captures all entity and player
+#    state from the CURRENT scene before it is freed, then changes scene.
+#
+# 2. SceneManager listens for the new scene root to appear in the tree.
+#    Once it does, it automatically restores all saved state onto matching
+#    nodes — both editor-placed and runtime-spawned entities.
+#
+# 3. For runtime-spawned entities, call SceneManager.restore_entity(node)
+#    immediately after adding the node to the scene tree so its saved state
+#    (health, position, etc.) is pushed onto it right away.
+#
+# ENTITY REQUIREMENTS
+# -------------------
+# Every saveable node must:
+#   - Have  var entity_id: String = "some_unique_id"  (set in Inspector or on spawn)
+#   - Belong to at least one of these groups: "player", "goblin_red", "sheep",
+#     or "saveable" (for any other type)
+#
+# Optionally expose these for richer save data:
+#   - var health: float
+#   - var max_health: float
+#   - func get_inventory_data() -> Array      (return your inventory array)
+#   - func set_inventory_data(d: Array)
+#   - func get_extra_data() -> Dictionary     (any other state you want saved)
+#   - func set_extra_data(d: Dictionary)
+# =============================================================================
+
 extends Node
 
-# ── Save file location ────────────────────────────────────────────────────────
-const SAVE_PATH := "user://savegame.json"
 
-# ── Player state ─────────────────────────────────────────────────────────────
-# Mirrors whatever your player node tracks. Add more fields as you need them.
-var player_data := {
-	"position_x":  0.0,
-	"position_y":  0.0,
-	"health":      100.0,
-	"max_health":  100.0,
-	# Inventory: Array of { "item": String, "quantity": int }
-	"inventory":   [],
-	# Any extra player flags/stats you want to persist
-	"extra":       {}
+# ── Inner class ───────────────────────────────────────────────────────────────
+# Holds the saved state for a single world entity. Keeping this as an inner
+# class means there is only one file to manage — no separate resource script.
+class EntityData:
+	var entity_id:   String  = ""
+	var entity_type: String  = ""
+	var scene_path:  String  = ""      # used to respawn runtime entities
+	var position:    Vector2 = Vector2.ZERO
+	var health:      float   = -1.0    # -1 = entity has no health stat
+	var max_health:  float   = -1.0
+	var inventory:   Array   = []
+	var extra:       Dictionary = {}
+
+	func to_dict() -> Dictionary:
+		return {
+			"entity_id":   entity_id,
+			"entity_type": entity_type,
+			"scene_path":  scene_path,
+			"position_x":  position.x,
+			"position_y":  position.y,
+			"health":      health,
+			"max_health":  max_health,
+			"inventory":   inventory,
+			"extra":       extra,
+		}
+
+	static func from_dict(d: Dictionary) -> EntityData:
+		var e       = EntityData.new()
+		e.entity_id   = d.get("entity_id",   "")
+		e.entity_type = d.get("entity_type", "")
+		e.scene_path  = d.get("scene_path",  "")
+		e.position    = Vector2(d.get("position_x", 0.0), d.get("position_y", 0.0))
+		e.health      = d.get("health",      -1.0)
+		e.max_health  = d.get("max_health",  -1.0)
+		e.inventory   = d.get("inventory",   [])
+		e.extra       = d.get("extra",       {})
+		return e
+
+
+# ── Constants ─────────────────────────────────────────────────────────────────
+const SAVE_PATH   := "user://savegame.json"
+
+# All groups SceneManager will scan when saving the world.
+# Add any new enemy/creature group names here.
+const ENTITY_GROUPS := ["Enemies", "Hazards", "Player", "Player Objects", "Obstacles", "Pickups"]
+
+
+# ── In-memory state ───────────────────────────────────────────────────────────
+# Player data is stored separately because it has a slightly different shape.
+var _player_data: Dictionary = {
+	"position_x": 0.0,
+	"position_y": 0.0,
+	"health":     100.0,
+	"max_health": 100.0,
+	"inventory":  [],
+	"extra":      {},
 }
 
-# ── World entity state ────────────────────────────────────────────────────────
-# Key:   entity_id  (String – must be unique per entity, see _make_entity_id)
-# Value: WorldEntityData  (defined in world_entity_data.gd)
-var world_entities: Dictionary = {}
+# entity_id → EntityData for every tracked world entity.
+var _entities: Dictionary = {}
 
-# Track which scene the player was last in, so you can reload it on continue.
-var current_scene_path: String = ""
+# The scene we should return to if the player loads from disk.
+var _saved_scene_path: String = ""
 
-# ── Scene-change helper ───────────────────────────────────────────────────────
-# Call this instead of get_tree().change_scene_to_file() everywhere so that
-# world state is always captured before leaving.
-func go_to_scene(new_scene_path: String) -> void:
-	save_world_from_scene(get_tree())
-	current_scene_path = new_scene_path
-	get_tree().change_scene_to_file(new_scene_path)
+# Set to true while a scene change is in progress so the node_added handler
+# knows to run a restore pass when the new scene root arrives.
+var _restoring: bool = false
 
 
-# ═════════════════════════════════════════════════════════════════════════════
-#  CAPTURING WORLD STATE  (call before changing scenes or on autosave)
-# ═════════════════════════════════════════════════════════════════════════════
-
-# Walk every node in the current scene and capture state from any node that
-# belongs to a recognised group. You can call this any time – it merges
-# into world_entities so previously-seen-but-not-present entities are kept.
-func save_world_from_scene(tree: SceneTree) -> void:
-	# ── Player ────────────────────────────────────────────────────────────────
-	var players := tree.get_nodes_in_group("player")
-	if players.size() > 0:
-		_capture_player(players[0])
-
-	# ── Enemies & creatures ───────────────────────────────────────────────────
-	for node in tree.get_nodes_in_group("goblin_red"):
-		_capture_entity(node, "goblin_red")
-
-	for node in tree.get_nodes_in_group("sheep"):
-		_capture_entity(node, "sheep")
-
-	# ── Generic "saveable" group ──────────────────────────────────────────────
-	# Tag any other spawned node with the group "saveable" and give it a
-	# property  entity_type: String  so we can record what it is.
-	for node in tree.get_nodes_in_group("saveable"):
-		var etype: String = node.get("entity_type") if node.get("entity_type") else "unknown"
-		_capture_entity(node, etype)
-
-
-# Pull data out of the player node into player_data.
-# Your player script should expose these properties; adjust names as needed.
-func _capture_player(player: Node) -> void:
-	if player.get("position") != null:
-		player_data["position_x"] = player.position.x
-		player_data["position_y"] = player.position.y
-
-	if player.get("health") != null:
-		player_data["health"] = player.health
-
-	if player.get("max_health") != null:
-		player_data["max_health"] = player.max_health
-
-	# If your player has an inventory node/script, call its serialise method.
-	# Convention: the player exposes get_inventory_data() -> Array
-	if player.has_method("get_inventory_data"):
-		player_data["inventory"] = player.get_inventory_data()
-
-	# Any extra flags your player script exposes via get_extra_data() -> Dictionary
-	if player.has_method("get_extra_data"):
-		player_data["extra"] = player.get_extra_data()
-
-
-# Pull data out of a world entity node into world_entities.
-func _capture_entity(node: Node, entity_type: String) -> void:
-	var eid := _make_entity_id(node)
-	var data: WorldEntityData
-
-	# Re-use existing record if we already have one; otherwise create fresh.
-	if world_entities.has(eid):
-		data = world_entities[eid]
-	else:
-		data = WorldEntityData.new()
-		data.entity_id   = eid
-		data.entity_type = entity_type
-		# scene_path lets us respawn the entity later.
-		# Convention: expose  var scene_path: String  on the script, OR we
-		# fall back to the scene's filename.
-		if node.get("scene_path") != null:
-			data.scene_path = node.scene_path
-		else:
-			data.scene_path = node.scene_file_path   # built-in on instanced scenes
-
-	# Always refresh mutable state
-	if node.get("position") != null:
-		data.position = node.position
-
-	if node.get("health") != null:
-		data.health = node.health
-
-	if node.get("max_health") != null:
-		data.max_health = node.max_health
-
-	if node.has_method("get_inventory_data"):
-		data.inventory = node.get_inventory_data()
-
-	if node.has_method("get_extra_data"):
-		data.extra = node.get_extra_data()
-
-	world_entities[eid] = data
-
-
-# Build a stable unique ID for an entity.
-# Best practice: give every spawnable node a property  entity_id: String
-# and set it to something deterministic (e.g. "goblin_red_3") when you spawn
-# it.  We fall back to the node's name if the property isn't there.
-func _make_entity_id(node: Node) -> String:
-	if node.get("entity_id") != null and node.entity_id != "":
-		return node.entity_id
-	return node.name   # name is stable within a scene but may collide across scenes
+# ── Lifecycle ─────────────────────────────────────────────────────────────────
+func _ready() -> void:
+	# Watch for the new scene root to arrive after a change_scene call.
+	# child_entered_tree fires for every node added anywhere in the tree, so
+	# we filter carefully inside _on_node_added.
+	get_tree().node_added.connect(_on_node_added)
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-#  RESTORING WORLD STATE  (call after a scene finishes loading)
+#  PUBLIC API — scene changing
 # ═════════════════════════════════════════════════════════════════════════════
 
-# Respawns and restores all tracked entities in the freshly-loaded scene.
-# Typical usage inside the scene's _ready():
-#     SceneManager.load_world_into_scene(get_tree(), $YourSpawnParentNode)
-func load_world_into_scene(tree: SceneTree, spawn_parent: Node = null) -> void:
-	# ── Restore player ────────────────────────────────────────────────────────
-	var players := tree.get_nodes_in_group("player")
-	if players.size() > 0:
-		_restore_player(players[0])
-
-	# ── Restore world entities ────────────────────────────────────────────────
-	# Decide where newly-spawned nodes will live in the scene tree.
-	var parent: Node = spawn_parent if spawn_parent else tree.current_scene
-
-	# Build a set of entity_ids already present in the scene so we
-	# don't double-spawn things that are placed in the editor.
-	var present_ids := {}
-	for group in ["goblin_red", "sheep", "saveable"]:
-		for node in tree.get_nodes_in_group(group):
-			var eid := _make_entity_id(node)
-			present_ids[eid] = node
-			# Still restore their runtime state even if they're already there
-			if world_entities.has(eid):
-				_restore_entity(node, world_entities[eid])
-
-	# Now spawn anything that was saved but isn't in the scene yet.
-	for eid in world_entities:
-		if present_ids.has(eid):
-			continue   # already handled above
-		var data: WorldEntityData = world_entities[eid]
-		if data.scene_path == "":
-			continue   # can't respawn without a scene path
-		_spawn_entity(data, parent)
+# Call this everywhere instead of get_tree().change_scene_to_file().
+# It captures the current world state BEFORE the old scene is freed,
+# then performs the scene change normally.
+func change_scene(path: String) -> void:
+	_capture_all(get_tree())
+	_saved_scene_path = path
+	_restoring = true
+	get_tree().change_scene_to_file(path)
 
 
-# Push saved player values back onto the player node.
-func _restore_player(player: Node) -> void:
-	if player.get("position") != null:
-		player.position = Vector2(player_data["position_x"], player_data["position_y"])
+# ═════════════════════════════════════════════════════════════════════════════
+#  PUBLIC API — runtime-spawned entities
+# ═════════════════════════════════════════════════════════════════════════════
 
-	if player.get("health") != null:
-		player.health = player_data["health"]
-
-	if player.get("max_health") != null:
-		player.max_health = player_data["max_health"]
-
-	# Convention: player exposes  set_inventory_data(data: Array)
-	if player.has_method("set_inventory_data") and player_data["inventory"].size() > 0:
-		player.set_inventory_data(player_data["inventory"])
-
-	if player.has_method("set_extra_data") and player_data["extra"].size() > 0:
-		player.set_extra_data(player_data["extra"])
-
-
-# Push saved entity values back onto an already-existing node.
-func _restore_entity(node: Node, data: WorldEntityData) -> void:
-	if node.get("position") != null:
-		node.position = data.position
-
-	if node.get("health") != null and data.health >= 0:
-		node.health = data.health
-
-	if node.get("max_health") != null and data.max_health >= 0:
-		node.max_health = data.max_health
-
-	if node.has_method("set_inventory_data") and data.inventory.size() > 0:
-		node.set_inventory_data(data.inventory)
-
-	if node.has_method("set_extra_data") and data.extra.size() > 0:
-		node.set_extra_data(data.extra)
-
-
-# Instantiate a scene from disk and restore its state, then add to the tree.
-func _spawn_entity(data: WorldEntityData, parent: Node) -> void:
-	if not ResourceLoader.exists(data.scene_path):
-		push_warning("SceneManager: cannot find scene '%s' for entity '%s'" \
-				% [data.scene_path, data.entity_id])
+# Call this immediately after add_child(node) for any runtime-spawned entity.
+# If we have saved data for this entity_id, it will be pushed onto the node.
+# If we have no record yet, the node's current state is captured and stored.
+func restore_entity(node: Node) -> void:
+	var eid: String = _get_id(node)
+	if eid == "":
+		push_warning("SceneManager.restore_entity: node '%s' has no entity_id." % node.name)
 		return
 
-	var packed: PackedScene = load(data.scene_path)
-	var node: Node = packed.instantiate()
-
-	# Stamp the entity_id back on so _make_entity_id() returns the right key.
-	if node.get("entity_id") != null:
-		node.entity_id = data.entity_id
-
-	parent.add_child(node)
-	_restore_entity(node, data)
+	if _entities.has(eid):
+		# We have saved data — restore it onto the freshly spawned node.
+		_apply_to_node(node, _entities[eid])
+	else:
+		# First time we've seen this entity — record its initial state.
+		_capture_entity(node)
 
 
-# ═════════════════════════════════════════════════════════════════════════════
-#  REMOVING ENTITIES  (call when an entity is permanently killed/destroyed)
-# ═════════════════════════════════════════════════════════════════════════════
-
-# Mark an entity as gone so it won't be respawned next time the scene loads.
-# Call this from the entity's death/destroy logic:
+# Call from an entity's death / permanent-destruction code so it is not
+# respawned the next time this scene loads:
 #     SceneManager.remove_entity(self)
 func remove_entity(node: Node) -> void:
-	var eid := _make_entity_id(node)
-	world_entities.erase(eid)
+	_entities.erase(_get_id(node))
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-#  DISK  SAVE / LOAD
+#  PUBLIC API — disk save / load
 # ═════════════════════════════════════════════════════════════════════════════
 
-# Serialise everything to JSON and write to disk.
-# Always captures current scene state first, then writes.
-func save_to_disk(tree: SceneTree) -> void:
-	save_world_from_scene(tree)
+# Write current in-memory state to disk.
+# Captures the live scene first so everything is up to date.
+func save_to_disk() -> void:
+	_capture_all(get_tree())
 
-	var entities_raw := {}
-	for eid in world_entities:
-		entities_raw[eid] = world_entities[eid].to_dict()
+	var raw_entities := {}
+	for eid in _entities:
+		raw_entities[eid] = _entities[eid].to_dict()
 
-	var save_data := {
-		"current_scene": current_scene_path,
-		"player":        player_data,
-		"entities":      entities_raw
+	var payload := {
+		"scene_path": _saved_scene_path,
+		"player":     _player_data,
+		"entities":   raw_entities,
 	}
 
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file == null:
-		push_error("SceneManager: failed to open save file for writing.")
+		push_error("SceneManager: could not write save file.")
 		return
-	file.store_string(JSON.stringify(save_data, "\t"))
+	file.store_string(JSON.stringify(payload, "\t"))
 	file.close()
-	print("SceneManager: game saved to ", SAVE_PATH)
+	print("SceneManager: saved to disk → ", SAVE_PATH)
 
 
-# Read the JSON from disk and restore all state into memory.
-# After calling this, call go_to_scene(current_scene_path) to resume.
+# Read state from disk into memory, then travel to the saved scene.
+# Returns false if no save file exists.
 func load_from_disk() -> bool:
 	if not FileAccess.file_exists(SAVE_PATH):
-		push_warning("SceneManager: no save file found at " + SAVE_PATH)
 		return false
 
 	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if file == null:
-		push_error("SceneManager: failed to open save file for reading.")
+		push_error("SceneManager: could not read save file.")
 		return false
 
-	var json_text  := file.get_as_text()
+	var parsed = JSON.parse_string(file.get_as_text())
 	file.close()
 
-	var parsed = JSON.parse_string(json_text)
 	if typeof(parsed) != TYPE_DICTIONARY:
-		push_error("SceneManager: save file is corrupt or unreadable.")
+		push_error("SceneManager: save file is corrupt.")
 		return false
 
-	current_scene_path = parsed.get("current_scene", "")
-	player_data        = parsed.get("player", player_data)
+	_player_data      = parsed.get("player", _player_data)
+	_saved_scene_path = parsed.get("scene_path", "")
 
-	world_entities.clear()
-	var entities_raw: Dictionary = parsed.get("entities", {})
-	for eid in entities_raw:
-		world_entities[eid] = WorldEntityData.from_dict(entities_raw[eid])
+	_entities.clear()
+	for eid in parsed.get("entities", {}):
+		_entities[eid] = EntityData.from_dict(parsed["entities"][eid])
 
-	print("SceneManager: game loaded from ", SAVE_PATH)
+	print("SceneManager: loaded from disk ← ", SAVE_PATH)
+
+	# Travel to the saved scene, which will trigger the auto-restore pass.
+	if _saved_scene_path != "":
+		_restoring = true
+		get_tree().change_scene_to_file(_saved_scene_path)
+
 	return true
 
 
-# ═════════════════════════════════════════════════════════════════════════════
-#  CONVENIENCE ACCESSORS
-# ═════════════════════════════════════════════════════════════════════════════
+# Wipe all in-memory state. Call this for "New Game".
+func reset() -> void:
+	_player_data = {
+		"position_x": 0.0, "position_y": 0.0,
+		"health": 100.0,   "max_health": 100.0,
+		"inventory": [],   "extra": {},
+	}
+	_entities.clear()
+	_saved_scene_path = ""
 
-# Quick check: has this entity been recorded (and therefore should exist)?
-func entity_exists(entity_id: String) -> bool:
-	return world_entities.has(entity_id)
 
-# Retrieve a single entity's saved data by id (returns null if not found).
-func get_entity_data(entity_id: String) -> WorldEntityData:
-	return world_entities.get(entity_id, null)
-
-# Check whether a valid save file is on disk (useful for greying out "Continue")
 func has_save_file() -> bool:
 	return FileAccess.file_exists(SAVE_PATH)
 
-# Wipe everything – useful for starting a new game.
-func reset() -> void:
-	player_data = {
-		"position_x": 0.0, "position_y": 0.0,
-		"health": 100.0, "max_health": 100.0,
-		"inventory": [], "extra": {}
-	}
-	world_entities.clear()
-	current_scene_path = ""
+
+# ═════════════════════════════════════════════════════════════════════════════
+#  PRIVATE — capturing state out of the live scene
+# ═════════════════════════════════════════════════════════════════════════════
+
+func _capture_all(tree: SceneTree) -> void:
+	# Capture the player first.
+	var players := tree.get_nodes_in_group("player")
+	if players.size() > 0:
+		_capture_player(players[0])
+
+	# Capture every tracked entity group.
+	for group in ENTITY_GROUPS:
+		for node in tree.get_nodes_in_group(group):
+			_capture_entity(node)
+
+
+func _capture_player(node: Node) -> void:
+	if node.get("position") != null:
+		_player_data["position_x"] = node.position.x
+		_player_data["position_y"] = node.position.y
+	if node.get("health") != null:
+		_player_data["health"] = node.health
+	if node.get("max_health") != null:
+		_player_data["max_health"] = node.max_health
+	if node.has_method("get_inventory_data"):
+		_player_data["inventory"] = node.get_inventory_data()
+	if node.has_method("get_extra_data"):
+		_player_data["extra"] = node.get_extra_data()
+
+
+func _capture_entity(node: Node) -> void:
+	var eid := _get_id(node)
+	if eid == "":
+		# Skip nodes that have no entity_id — we can't track them reliably.
+		return
+
+	# Reuse an existing record so we don't lose fields we can't re-read
+	# (e.g. scene_path, which is only knowable at first capture).
+	var data: EntityData
+	if _entities.has(eid):
+		data = _entities[eid]
+	else:
+		data            = EntityData.new()
+		data.entity_id  = eid
+		data.scene_path = node.scene_file_path  # empty for editor-placed nodes; that's fine
+
+		# Determine entity type from whichever group this node belongs to.
+		for group in ENTITY_GROUPS:
+			if node.is_in_group(group):
+				data.entity_type = group
+				break
+
+	# Refresh all mutable fields every time.
+	if node.get("position") != null:
+		data.position = node.position
+	if node.get("health") != null:
+		data.health = node.health
+	if node.get("max_health") != null:
+		data.max_health = node.max_health
+	if node.has_method("get_inventory_data"):
+		data.inventory = node.get_inventory_data()
+	if node.has_method("get_extra_data"):
+		data.extra = node.get_extra_data()
+
+	_entities[eid] = data
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+#  PRIVATE — restoring state onto a live scene
+# ═════════════════════════════════════════════════════════════════════════════
+
+# Fired for every node added to the SceneTree. We wait for the new scene root,
+# which is the direct child of root, then run a full restore pass.
+func _on_node_added(node: Node) -> void:
+	if not _restoring:
+		return
+	# The new scene root is a direct child of the tree's root node.
+	if node.get_parent() != get_tree().root:
+		return
+	# Ignore this singleton itself re-entering (shouldn't happen, but be safe).
+	if node == self:
+		return
+
+	_restoring = false
+
+	# Wait one frame so all editor-placed child nodes of the new scene have
+	# finished entering the tree before we try to find them by group.
+	await get_tree().process_frame
+	_restore_all(get_tree())
+
+
+func _restore_all(tree: SceneTree) -> void:
+	# Restore the player.
+	var players := tree.get_nodes_in_group("player")
+	if players.size() > 0:
+		_restore_player(players[0])
+
+	# Restore all editor-placed entities that are already in the scene.
+	for group in ENTITY_GROUPS:
+		for node in tree.get_nodes_in_group(group):
+			var eid := _get_id(node)
+			if _entities.has(eid):
+				_apply_to_node(node, _entities[eid])
+
+
+func _restore_player(node: Node) -> void:
+	if node.get("position") != null:
+		node.position = Vector2(_player_data["position_x"], _player_data["position_y"])
+	if node.get("health") != null:
+		node.health = _player_data["health"]
+	if node.get("max_health") != null:
+		node.max_health = _player_data["max_health"]
+	if node.has_method("set_inventory_data") and (_player_data["inventory"] as Array).size() > 0:
+		node.set_inventory_data(_player_data["inventory"])
+	if node.has_method("set_extra_data") and (_player_data["extra"] as Dictionary).size() > 0:
+		node.set_extra_data(_player_data["extra"])
+
+
+func _apply_to_node(node: Node, data: EntityData) -> void:
+	if node.get("position") != null:
+		node.position = data.position
+	if node.get("health") != null and data.health >= 0.0:
+		node.health = data.health
+	if node.get("max_health") != null and data.max_health >= 0.0:
+		node.max_health = data.max_health
+	if node.has_method("set_inventory_data") and data.inventory.size() > 0:
+		node.set_inventory_data(data.inventory)
+	if node.has_method("set_extra_data") and data.extra.size() > 0:
+		node.set_extra_data(data.extra)
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+#  PRIVATE — utility
+# ═════════════════════════════════════════════════════════════════════════════
+
+func _get_id(node: Node) -> String:
+	var eid = node.get("entity_id")
+	if eid != null and (eid as String) != "":
+		return eid as String
+	return ""
