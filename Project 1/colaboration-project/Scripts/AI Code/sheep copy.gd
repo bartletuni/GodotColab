@@ -13,6 +13,7 @@ extends CharacterBody2D
 const SHEEP_MAX_HEALTH = 3
 const SHEEP_SPEED = 250
 const FLEE_DISTANCE = 400.0
+const FLEE_SPEED_MULTIPLIER = 2.5
 
 enum SheepState {IDLE, WANDER, FLEE, DEATH}
 
@@ -60,7 +61,7 @@ func _physics_process(_delta: float) -> void:
 				flee_direction = Vector2.RIGHT.rotated(randf_range(0, TAU))
 			
 			navigation.target_position = global_position + (flee_direction.normalized() * FLEE_DISTANCE)
-			sheep_velocity_modify = 2.5
+			sheep_velocity_modify = 0
 			animated_sprite_2d.play("Walk")
 			
 			var next_path_pos = navigation.get_next_path_position()
@@ -68,9 +69,8 @@ func _physics_process(_delta: float) -> void:
 			if walkdirection == Vector2.ZERO:
 				walkdirection = flee_direction.normalized()
 			
-			var intended_velocity = walkdirection * SHEEP_SPEED
-			
-			navigation.set_velocity(intended_velocity)
+			velocity = walkdirection * SHEEP_SPEED * FLEE_SPEED_MULTIPLIER
+			move_and_slide()
 			if walkdirection.x != 0:
 				animated_sprite_2d.flip_h = walkdirection.x < 0
 			
