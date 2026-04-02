@@ -23,29 +23,34 @@ var goblin_velocity_modify = 0
 var home_position : Vector2
 var wander_target : Vector2
 
-@export var knockbackPower: int = 5000
+
+@export var ACCEL = 10.0
+@export var FRICTION = 15.0
+@export var knockbackPower: int = 500
 
 
 
 func _ready() -> void:
 	home_position = global_position
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	match current_state:
 		
 		EnemyState.IDLE:
-			velocity = Vector2.ZERO
+			velocity = velocity.lerp(Vector2.ZERO, FRICTION * delta)
+			move_and_slide()
 			animated_sprite_2d.play("Idle")
 			
 		EnemyState.WANDER:
 			var direction = (wander_target - global_position).normalized()
+			var target_vel = direction * (GOBLIN_SPEED)
 			
+			velocity = velocity.lerp(target_vel, ACCEL * delta)
 			if direction.x < 0:
 				animated_sprite_2d.flip_h = true
 			elif direction.x > 0:
 				animated_sprite_2d.flip_h = false
 			
-			velocity = direction * GOBLIN_SPEED/2
 			move_and_slide()
 			animated_sprite_2d.play("Walk")
 			
@@ -144,7 +149,9 @@ func _on_de_agro_timer_timeout() -> void:
 
 
 func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
-	velocity = safe_velocity * goblin_velocity_modify
+	var target_velocity = safe_velocity * goblin_velocity_modify
+	var weight = ACCEL if target_velocity.length() > 0 else FRICTION
+	velocity = velocity.lerp(target_velocity, weight * get_physics_process_delta_time())
 	move_and_slide()
 	
 func knockback():
