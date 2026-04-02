@@ -16,6 +16,8 @@ var entity_id: String = "player001"
 const SPEED = 450.0
 const HEALTH = 5
 const SHIELD = 0
+const ACCEL = 10.0
+const FRICTION = 15.0
 
 func _ready() -> void:
 	PlayerData.player_health = HEALTH
@@ -23,7 +25,7 @@ func _ready() -> void:
 	health_bar.value = PlayerData.player_health
 	shield.value = PlayerData.player_shield
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 
 	label.text = "Wood: " + str(PlayerData.player_wood) + " Gold: " + str(PlayerData.player_gold)
 	
@@ -53,10 +55,11 @@ func _physics_process(_delta: float) -> void:
 		return
 	
 	if PlayerData.player_health >= 1:
-		velocity = direction * SPEED
+		var target_velocity = direction * SPEED
+		var weight = ACCEL if direction != Vector2.ZERO else FRICTION
+		velocity = velocity.lerp(target_velocity, weight * delta)
 	else:
-		velocity.x = 0
-		velocity.y = 0
+		velocity = velocity.lerp(Vector2.ZERO, FRICTION * delta)
 	
 	var intX = int(velocity.x)
 	var intY = int(velocity.y)
@@ -66,7 +69,7 @@ func _physics_process(_delta: float) -> void:
 	elif intX < 0:
 		animated_sprite_2d.flip_h = true
 	
-	if intX == 0 and intY == 0 and PlayerData.player_health != 0:
+	if velocity.length() < 20 and PlayerData.player_health != 0:
 		animated_sprite_2d.play("idle")
 	elif intX != 0 or intY != 0:
 		animated_sprite_2d.play("run")

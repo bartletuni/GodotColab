@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var entity_id: String = "redgoblin001"
 
-@onready var goblin_red: CharacterBody2D = $"."
+@export var bomb_goblin: CharacterBody2D
 @onready var player: CharacterBody2D = $"../Player"
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var detection_radius: Area2D = $detection_radius
@@ -13,7 +13,7 @@ var entity_id: String = "redgoblin001"
 @onready var hitbox_shape: CollisionShape2D = $hitbox/hitbox_shape
 
 const GOBLIN_MAX_HEALTH = 3
-const GOBLIN_SPEED = 250
+const GOBLIN_SPEED = 50
 
 enum EnemyState {IDLE, WANDER, FOLLOW, ATTACK, DEATH}
 
@@ -24,6 +24,7 @@ var home_position : Vector2
 var wander_target : Vector2
 
 @export var knockbackPower: int = 5000
+
 
 
 func _ready() -> void:
