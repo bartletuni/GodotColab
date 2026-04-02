@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://be7iyxjfkhmky" path="res://Assets/Player.tscn" id="2_n1j1f"]
 [ext_resource type="Texture2D" uid="uid://dlgch1yn3i01x" path="res://Sprites/Tiny Swords (Free Pack)/Terrain/Tileset/Tilemap_color2.png" id="2_ogrtk"]
 [ext_resource type="PackedScene" uid="uid://brummp2q3ag17" path="res://Assets/bomb_goblin.tscn" id="6_ogrtk"]
+[ext_resource type="PackedScene" uid="uid://cg71mvfl03y4s" path="res://Assets/goblin_yellow.tscn" id="7_ho2al"]
 [ext_resource type="PackedScene" uid="uid://d0wvheaq85c1x" path="res://Assets/Goblin_Red.tscn" id="8_i2y2s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ho2al"]
@@ -261,6 +262,9 @@ position_smoothing_speed = 10.0
 
 [node name="Bomb_Goblin" parent="." unique_id=1821054615 instance=ExtResource("6_ogrtk")]
 position = Vector2(237, -368)
+
+[node name="Goblin_Yellow" parent="." unique_id=1468678729 instance=ExtResource("7_ho2al")]
+position = Vector2(-796, 549)
 
 [connection signal="timeout" from="Timers/Timer" to="Player" method="_on_timer_timeout"]
 [connection signal="timeout" from="Timers/ReloadTimer" to="Player" method="_on_reload_timer_timeout"]

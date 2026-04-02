@@ -1,6 +1,7 @@
 extends Area2D
 
 var entity_id: String = "mobspawner001"
+var goblin_types = [preload("res://Assets/Goblin_Red.tscn"), preload("res://Assets/goblin_yellow.tscn")]
 
 @onready var path_follow_2d: PathFollow2D = $Path2D/PathFollow2D
 @onready var timer: Timer = $Timer
@@ -22,10 +23,11 @@ func _on_area_entered(area: Area2D) -> void:
 		WorldData.spawn_on_player = 1
 
 func goblin_spawn():
-	var goblin_red = preload("res://Assets/Goblin_Red.tscn").instantiate()
+	var random_goblin_scene = goblin_types.pick_random()
+	var new_goblin = random_goblin_scene.instantiate()
 	path_follow_2d.progress_ratio = randf()
-	goblin_red.global_position = path_follow_2d.global_position
-	add_sibling(goblin_red)
+	new_goblin.global_position = path_follow_2d.global_position
+	add_sibling(new_goblin)
 
 func _on_area_exited(area: Area2D) -> void:
 	if area.is_in_group("Player"):

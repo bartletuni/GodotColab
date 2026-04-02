@@ -13,16 +13,16 @@ var entity_id: String = "redgoblin001"
 @onready var hitbox_shape: CollisionShape2D = $hitbox/hitbox_shape
 
 const GOBLIN_MAX_HEALTH = 3
-const GOBLIN_SPEED = 250
 
 enum EnemyState {IDLE, WANDER, FOLLOW, ATTACK, DEATH}
 
-var goblin_current_health = GOBLIN_MAX_HEALTH
+@export var goblin_current_health = GOBLIN_MAX_HEALTH
 var current_state = EnemyState.IDLE
-var goblin_velocity_modify = 0
+var goblin_velocity_modify = 1
 var home_position : Vector2
 var wander_target : Vector2
 
+@export var goblin_speed: float = 250
 @export var knockbackPower: int = 500
 @export var ACCEL = 10.0
 @export var FRICTION = 6.0
@@ -41,7 +41,7 @@ func _physics_process(delta: float) -> void:
 			
 		EnemyState.WANDER:
 			var direction = (wander_target - global_position).normalized()
-			var target_vel = direction * (GOBLIN_SPEED / 2)
+			var target_vel = direction * (goblin_speed / 2)
 			
 			velocity = velocity.lerp(target_vel, ACCEL * delta)
 			if direction.x < 0:
@@ -58,12 +58,13 @@ func _physics_process(delta: float) -> void:
 				
 		EnemyState.FOLLOW:
 			navigation.target_position = player.global_position
+			navigation.max_speed = goblin_speed
 			animated_sprite_2d.play("Walk")
-			goblin_velocity_modify = 2.5
+			goblin_velocity_modify = 1
 			
 			var next_path_pos = navigation.get_next_path_position()
 			var walkdirection = (next_path_pos - global_position).normalized()
-			var intended_velocity = (walkdirection * GOBLIN_SPEED)
+			var intended_velocity = (walkdirection * goblin_speed)
 			
 			navigation.set_velocity(intended_velocity)
 			animated_sprite_2d.flip_h = walkdirection.x < 0

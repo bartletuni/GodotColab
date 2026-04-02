@@ -43,7 +43,7 @@ curve = SubResource("Curve2D_21hkd")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=1626719895]
 position = Vector2(0, -360)
-rotation = 0.14784937
+rotation = 0.14784935
 
 [node name="Timer" type="Timer" parent="." unique_id=855647075]
 wait_time = 3.0
