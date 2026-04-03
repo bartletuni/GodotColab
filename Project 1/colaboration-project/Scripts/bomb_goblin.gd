@@ -25,6 +25,9 @@ var goblin_velocity_modify = 0
 var home_position : Vector2
 var wander_target : Vector2
 
+var can_throw: bool = true
+@export var throw_cooldown: float = 2.0
+
 
 @export var ACCEL = 10.0
 @export var FRICTION = 15.0
@@ -77,17 +80,27 @@ func _physics_process(delta: float) -> void:
 			
 		EnemyState.ATTACK:
 			goblin_velocity_modify = 0
-			animated_sprite_2d.play("Idle")
-			var dynamite = dynamite_scene.instantiate()
-			get_parent().add_child(dynamite)
-			dynamite.global_position = global_position
 			
-			var direction = (player.global_position - global_position).normalized()
-			
-			var throw_force = (direction + Vector2(0, -0.5)) * 400
-			dynamite.apply_central_impulse(throw_force)
-			
+			if can_throw:
+				can_throw = false
+				animated_sprite_2d.play("Attack")
+				
+				await get_tree().create_timer(0.3).timeout
+				var dynamite = dynamite_scene.instantiate()
+				get_parent().add_child(dynamite)
+				dynamite.global_position = global_position
+				
+				var direction = (player.global_position - global_position).normalized()
+				
+				var throw_force = (direction + Vector2(0, -0.5)) * 400
+				dynamite.apply_central_impulse(throw_force)
+				dynamite.angular_velocity = randf_range(-30, 30)
+				
+				await get_tree().create_timer(throw_cooldown).timeout
+				can_throw = true
+				
 			if goblin_current_health != 0 and global_position.distance_to(player.global_position) > 300:
+				print("Woah!")
 				hitbox_shape.set_deferred("disabled", true)
 				current_state = EnemyState.FOLLOW
 

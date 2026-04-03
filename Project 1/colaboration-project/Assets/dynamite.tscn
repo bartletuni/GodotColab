@@ -130,8 +130,10 @@ animations = [{
 radius = 50.01
 
 [node name="Dynamite" type="RigidBody2D" unique_id=1692285709 groups=["Hazards"]]
+collision_layer = 8
+collision_mask = 3
 mass = 0.104
-gravity_scale = 0.842
+gravity_scale = 0.7
 script = ExtResource("1_acc5q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1345613870 groups=["Hazards"]]
@@ -151,7 +153,7 @@ shape = SubResource("CircleShape2D_nscum")
 disabled = true
 
 [node name="FuseTimer" type="Timer" parent="." unique_id=710380595]
-wait_time = 0.5
+wait_time = 0.6
 one_shot = true
 autostart = true
 

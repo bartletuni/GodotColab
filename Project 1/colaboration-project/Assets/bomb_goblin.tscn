@@ -288,6 +288,8 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="Bomb_Goblin" type="CharacterBody2D" unique_id=851927008 node_paths=PackedStringArray("bomb_goblin")]
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("1_snovd")
 bomb_goblin = NodePath(".")
 
