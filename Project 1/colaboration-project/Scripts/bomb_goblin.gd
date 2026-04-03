@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var entity_id: String = "redgoblin001"
+var entity_id: String = ""
 
 @export var bomb_goblin: CharacterBody2D
 @onready var player: CharacterBody2D = $"../Player"

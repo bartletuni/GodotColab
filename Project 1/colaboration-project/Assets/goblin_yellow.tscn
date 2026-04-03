@@ -361,3 +361,8 @@ sprite_frames = SubResource("SpriteFrames_8mael")
 animation = &"death"
 frame = 0
 frame_progress = 0.0
+
+[node name="HealthBar" parent="." index="5" unique_id=438853022]
+max_value = 2.0
+step = 1.0
+value = 2.0

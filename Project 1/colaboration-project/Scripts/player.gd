@@ -47,18 +47,6 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.lerp(attack_speed_target, ACCEL * delta)
 		move_and_slide()
 		return
-	#if animated_sprite_2d.animation == "attack_side" and animated_sprite_2d.is_playing():
-		#velocity = direction * 200
-		#move_and_slide()
-		#return
-	#elif	 animated_sprite_2d.animation == "attack_up" and animated_sprite_2d.is_playing():
-		#velocity = direction * 200
-		#move_and_slide()
-		#return
-	#elif	 animated_sprite_2d.animation == "attack_down" and animated_sprite_2d.is_playing():
-		#velocity = direction * 200
-		#move_and_slide()
-		#return
 	
 	if PlayerData.player_health >= 1:
 		var target_velocity = direction * SPEED
