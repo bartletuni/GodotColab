@@ -141,7 +141,7 @@ position = Vector2(-0.055, 1.65)
 rotation = 0.4660029
 shape = SubResource("CapsuleShape2D_vhuvm")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1221415081]
+[node name="Dynamite_Sprite" type="AnimatedSprite2D" parent="." unique_id=1221415081]
 sprite_frames = SubResource("SpriteFrames_emgbd")
 animation = &"Explosion"
 autoplay = "Primed"

@@ -90,11 +90,18 @@ func _physics_process(delta: float) -> void:
 				get_parent().add_child(dynamite)
 				dynamite.global_position = global_position
 				
+				var sprite_node = dynamite.get_node("Dynamite_Sprite")
+				
+				var tween = create_tween()
+				tween.tween_property(sprite_node, "scale", Vector2(4.0, 4.0), 0.4).set_trans(Tween.TRANS_SINE)
+				tween.tween_property(sprite_node, "scale", Vector2(1.0, 1.0), 0.4).set_trans(Tween.TRANS_SINE)
+				
 				var direction = (player.global_position - global_position).normalized()
 				
 				var throw_force = (direction + Vector2(0, -0.5)) * 400
 				dynamite.apply_central_impulse(throw_force)
-				dynamite.angular_velocity = randf_range(-30, 30)
+				dynamite.angular_velocity = randf_range(-10, 10)
+
 				
 				await get_tree().create_timer(throw_cooldown).timeout
 				can_throw = true
