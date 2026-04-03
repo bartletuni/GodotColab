@@ -1,7 +1,12 @@
 extends Area2D
 
 var entity_id: String = "mobspawner001"
-var goblin_types = [preload("res://Assets/Goblin_Red.tscn"), preload("res://Assets/goblin_yellow.tscn")]
+
+#Array containing all enemies potentially spawned
+var goblin_types = [
+	preload("res://Assets/Goblin_Red.tscn"),
+	preload("res://Assets/Goblin_Red.tscn"),
+ 	preload("res://Assets/goblin_yellow.tscn")]
 
 @onready var path_follow_2d: PathFollow2D = $Path2D/PathFollow2D
 @onready var timer: Timer = $Timer

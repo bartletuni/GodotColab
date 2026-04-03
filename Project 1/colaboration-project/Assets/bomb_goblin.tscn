@@ -293,7 +293,7 @@ bomb_goblin = NodePath(".")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=813736542]
 sprite_frames = SubResource("SpriteFrames_1fhl6")
-animation = &"Walk"
+animation = &"Attack"
 autoplay = "Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1505681371]
@@ -341,6 +341,10 @@ one_shot = true
 
 [node name="Navigation" type="NavigationAgent2D" parent="." unique_id=1915600666]
 avoidance_enabled = true
+
+[node name="Bomb_Timer" type="Timer" parent="." unique_id=713485030]
+wait_time = 4.0
+one_shot = true
 
 [connection signal="area_entered" from="damage_box" to="." method="_on_damage_box_area_entered"]
 [connection signal="area_entered" from="detection_radius" to="." method="_on_detection_radius_area_entered"]

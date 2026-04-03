@@ -1,0 +1,151 @@
+[gd_scene format=3 uid="uid://c3tw6jwlkjpnk"]
+
+[ext_resource type="Texture2D" uid="uid://dupb64rmccfek" path="res://Sprites/Tiny Swords (Update 010)/Factions/Goblins/Troops/TNT/Dynamite/Dynamite.png" id="1_3ow3x"]
+[ext_resource type="Texture2D" uid="uid://dco5r6hmmkvfc" path="res://Sprites/Tiny Swords (Update 010)/Effects/Explosion/Explosions.png" id="2_t8ewh"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vhuvm"]
+radius = 4.4721236
+height = 42.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_acc5q"]
+atlas = ExtResource("2_t8ewh")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t8ewh"]
+atlas = ExtResource("2_t8ewh")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ohuia"]
+atlas = ExtResource("2_t8ewh")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6f507"]
+atlas = ExtResource("2_t8ewh")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fk45d"]
+atlas = ExtResource("2_t8ewh")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ctysl"]
+atlas = ExtResource("2_t8ewh")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7mfjq"]
+atlas = ExtResource("2_t8ewh")
+region = Rect2(1152, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0i2q7"]
+atlas = ExtResource("2_t8ewh")
+region = Rect2(1344, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7q6yt"]
+atlas = ExtResource("2_t8ewh")
+region = Rect2(1536, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7baol"]
+atlas = ExtResource("1_3ow3x")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hvwyo"]
+atlas = ExtResource("1_3ow3x")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eapqv"]
+atlas = ExtResource("1_3ow3x")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0yxh"]
+atlas = ExtResource("1_3ow3x")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbphe"]
+atlas = ExtResource("1_3ow3x")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5vly"]
+atlas = ExtResource("1_3ow3x")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_emgbd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_acc5q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t8ewh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ohuia")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6f507")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fk45d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ctysl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7mfjq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0i2q7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7q6yt")
+}],
+"loop": false,
+"name": &"Explosion",
+"speed": 40.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7baol")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hvwyo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eapqv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0yxh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbphe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p5vly")
+}],
+"loop": true,
+"name": &"Primed",
+"speed": 20.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nscum"]
+radius = 201.06218
+
+[node name="Dynamite" type="RigidBody2D" unique_id=1692285709]
+mass = 0.104
+gravity_scale = 0.842
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1345613870]
+position = Vector2(-0.055, 1.65)
+rotation = 0.4660029
+shape = SubResource("CapsuleShape2D_vhuvm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1221415081]
+sprite_frames = SubResource("SpriteFrames_emgbd")
+animation = &"Primed"
+frame_progress = 0.9073866
+
+[node name="ExplosionRadius" type="Area2D" parent="." unique_id=337395988]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionRadius" unique_id=1139283877]
+shape = SubResource("CircleShape2D_nscum")
+
+[node name="FuseTimer" type="Timer" parent="." unique_id=710380595]
+wait_time = 2.0

@@ -12,6 +12,8 @@ var entity_id: String = "redgoblin001"
 @onready var hitbox: Area2D = $hitbox
 @onready var hitbox_shape: CollisionShape2D = $hitbox/hitbox_shape
 
+var dynamite_scene = preload("res://Assets/dynamite.tscn")
+
 const GOBLIN_MAX_HEALTH = 3
 const GOBLIN_SPEED = 50
 
@@ -75,21 +77,17 @@ func _physics_process(delta: float) -> void:
 			
 		EnemyState.ATTACK:
 			goblin_velocity_modify = 0
-			if global_position.y + 40 >= player.global_position.y and global_position.y - 40 <= player.global_position.y:
-				animated_sprite_2d.play("AttackSide")
-			elif global_position.y < player.global_position.y:
-				animated_sprite_2d.play("AttackDown")
-			else:
-				animated_sprite_2d.play("AttackUp")
-				
-			await get_tree().create_timer(0.3).timeout
-			if PlayerData.player_health != 0 and goblin_current_health != 0:
-				hitbox_shape.set_deferred("disabled", false)
+			animated_sprite_2d.play("Idle")
+			var dynamite = dynamite_scene.instantiate()
+			get_parent().add_child(dynamite)
+			dynamite.global_position = global_position
 			
-			await get_tree().create_timer(0.3).timeout
-			hitbox_shape.set_deferred("disabled", true)
+			var direction = (player.global_position - global_position).normalized()
 			
-			if goblin_current_health != 0:
+			var throw_force = (direction + Vector2(0, -0.5)) * 400
+			dynamite.apply_central_impulse(throw_force)
+			
+			if goblin_current_health != 0 and global_position.distance_to(player.global_position) > 300:
 				hitbox_shape.set_deferred("disabled", true)
 				current_state = EnemyState.FOLLOW
 
